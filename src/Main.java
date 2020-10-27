@@ -8,8 +8,10 @@ import static org.lwjgl.opengl.GL11C.glClear;
 
 public class Main {
     public static void main(String[] args) {
-        if ( !glfwInit() )
-            throw new IllegalStateException("Unable to initialize GLFW");
+        if ( !glfwInit() ){
+            System.err.println("Unable to initialize GLFW");
+            System.exit(1);
+        }
 
         WindowManager wm = new WindowManager();
 
