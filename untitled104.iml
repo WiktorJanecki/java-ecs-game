@@ -8,5 +8,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="joml-1.9.25-javadoc" level="project" />
+    <orderEntry type="library" name="lwjgl-assimp-natives-windows" level="project" />
+    <orderEntry type="library" name="joml-1.9.25-sources" level="project" />
+    <orderEntry type="library" name="joml-1.9.25" level="project" />
   </component>
 </module>
