@@ -1,3 +1,6 @@
+import render.Loader;
+import render.Renderer;
+import render.models.RawModel;
 import state.GameState;
 import state.State;
 import window.WindowManager;
@@ -24,16 +27,28 @@ public class Main {
 
         state.start(window);
 
-        while ( !glfwWindowShouldClose(window) ) {
+        float[] vertices = { -0.5f, 0.5f, 0f, -0.5f, -0.5f, 0f, 0.5f, -0.5f,
+                0f, 0.5f, -0.5f, 0f, 0.5f, 0.5f, 0f, -0.5f, 0.5f, 0f };
 
+        Loader loader = new Loader();
+        Renderer renderer = new Renderer();
+        RawModel model = loader.loadToVAO(vertices);
+
+        while ( !glfwWindowShouldClose(window) ) {
+            //events
+            glfwPollEvents();
+
+            //game update
             state.update();
 
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            //prepare
+            renderer.prepare();
 
+            //render
             state.render();
+            renderer.render(model);
 
             glfwSwapBuffers(window); // swap the color buffers
-            glfwPollEvents();
         }
     }
 }
