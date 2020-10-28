@@ -1,6 +1,7 @@
 import render.Loader;
 import render.Renderer;
 import render.models.RawModel;
+import render.shaders.StaticShader;
 import state.GameState;
 import state.State;
 import window.WindowManager;
@@ -42,6 +43,7 @@ public class Main {
         Loader loader = new Loader();
         Renderer renderer = new Renderer();
         RawModel model = loader.loadToVAO(vertices,indices);
+        StaticShader shader = new StaticShader();
 
         while ( !glfwWindowShouldClose(window) ) {
             //events
@@ -55,9 +57,14 @@ public class Main {
 
             //render
             state.render();
+
+            shader.start();
             renderer.render(model);
+            shader.stop();
 
             glfwSwapBuffers(window); // swap the color buffers
         }
+        loader.cleanUp();
+        shader.cleanUp();
     }
 }
