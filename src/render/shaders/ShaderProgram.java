@@ -20,6 +20,7 @@ public abstract class ShaderProgram {
         programID = glCreateProgram();
         glAttachShader(programID,vertexShaderID);
         glAttachShader(programID,fragmentShaderID);
+        bindAttributes();
         glLinkProgram(programID);
         glValidateProgram(programID);
     }

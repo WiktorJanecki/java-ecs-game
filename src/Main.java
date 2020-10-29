@@ -1,6 +1,7 @@
 import render.Loader;
 import render.Renderer;
 import render.models.RawModel;
+import render.models.TexturedModel;
 import render.shaders.StaticShader;
 import state.GameState;
 import state.State;
@@ -39,10 +40,18 @@ public class Main {
                 0,1,3,
                 3,1,2
         };
+        float[] textureCoords = {
+                0,0,
+                0,1,
+                1,1,
+                1,0
+        };
 
         Loader loader = new Loader();
         Renderer renderer = new Renderer();
-        RawModel model = loader.loadToVAO(vertices,indices);
+        RawModel model = loader.loadToVAO(vertices,textureCoords,indices);
+        int texture = loader.loadTexture("texture");
+        TexturedModel texturedModel = new TexturedModel(model,texture);
         StaticShader shader = new StaticShader();
 
         while ( !glfwWindowShouldClose(window) ) {
@@ -59,7 +68,7 @@ public class Main {
             state.render();
 
             shader.start();
-            renderer.render(model);
+            renderer.render(texturedModel);
             shader.stop();
 
             glfwSwapBuffers(window); // swap the color buffers
