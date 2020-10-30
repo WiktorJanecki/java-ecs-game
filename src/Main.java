@@ -1,17 +1,15 @@
-import org.joml.Vector3f;
-import render.Loader;
-import render.Renderer;
-import render.models.RawModel;
-import render.models.TexturedModel;
 import render.shaders.StaticShader;
 import state.GameState;
+import state.MenuState;
 import state.State;
+import state.StateList;
 import window.WindowManager;
 import entities.*;
 
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Main {
+
     public static void main(String[] args) {
         if ( !glfwInit() ){
             System.err.println("Unable to initialize GLFW");
@@ -23,72 +21,58 @@ public class Main {
         long fpsStop;
         int fpsCount = 0;
 
+
+        StateList stateList = new StateList();
+
+        stateList.addState(new MenuState());
+        stateList.addState(new GameState());
+
         State state;
-        state = new GameState();
 
         wm.createWindow(1280,720,wm.getDeveloperTitle());
 
         long window = wm.getWindow();
 
-        state.start(window);
-
-        float[] vertices = {
-                -0.5f, 0.5f, 0,
-                -0.5f, -0.5f, 0,
-                0.5f, -0.5f, 0,
-                0.5f, 0.5f, 0f
-        };
-
-        int[] indices = {
-                0,1,3,
-                3,1,2
-        };
-        float[] textureCoords = {
-                0,0,
-                0,1,
-                1,1,
-                1,0
-        };
-
         StaticShader shader = new StaticShader();
-        Loader loader = new Loader();
-        Renderer renderer = new Renderer(shader);
-        RawModel model = loader.loadToVAO(vertices,textureCoords,indices);
-        int texture = loader.loadTexture("texture");
-        TexturedModel texturedModel = new TexturedModel(model,texture);
-        Entity entity = new Entity(texturedModel,new Vector3f(0,0,-1),0,0,0,1,1,1);
         Camera camera = new Camera();
+
         String title = wm.getDeveloperTitle();
 
         while ( !glfwWindowShouldClose(window) ) {
-            //events
-            glfwPollEvents();
+            state = stateList.getState(stateList.CHANGINGSTATEINDEX);
+            state.start(window, shader, stateList);
+            while( !stateList.ISSTATECHANGING) {
+                //events
+                glfwPollEvents();
 
-            //fps counter
-            {
-                fpsCount++;
-                fpsStop = System.currentTimeMillis();
-                if (fpsStop - fpsStart > 1000) {
-                    fpsStart = System.currentTimeMillis();
-                    glfwSetWindowTitle(wm.getWindow(), (title + "               FPS : " + "" + fpsCount));
-                    fpsCount = 0;
+                //fps counter
+                {
+                    fpsCount++;
+                    fpsStop = System.currentTimeMillis();
+                    if (fpsStop - fpsStart > 1000) {
+                        fpsStart = System.currentTimeMillis();
+                        glfwSetWindowTitle(wm.getWindow(), (title + "               FPS : " + "" + fpsCount));
+                        fpsCount = 0;
+                    }
                 }
+                //
+
+                //game update
+                state.update();
+
+                //render
+                shader.start();
+
+                shader.loadViewMatrix(camera);
+
+                state.render();
+
+                shader.stop();
+
+                glfwSwapBuffers(window); // swap the color buffers
+                if(glfwWindowShouldClose(window)) break;
             }
-            //
-
-            //game update
-            state.update();
-
-            //render
-            shader.start();
-            shader.loadViewMatrix(camera);
-            shader.stop();
-
-            state.render();
-
-            glfwSwapBuffers(window); // swap the color buffers
         }
-        loader.cleanUp();
-        shader.cleanUp();
+        stateList.cleanUp();
     }
 }
