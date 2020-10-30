@@ -13,7 +13,6 @@ public class Camera {
     public Vector3f getPosition() {
         return position;
     }
-
     public void increasePosition(Vector3f position){
         this.position.x += position.x;
         this.position.y += position.y;

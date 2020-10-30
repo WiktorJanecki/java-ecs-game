@@ -29,11 +29,19 @@ public class Renderer {
         shader.stop();
     }
 
+    /**
+     * Prepare screen before rendering
+     * Clear, depth test and color
+     */
     public void prepare(){
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0,0.5f,0.5f,1);
     };
 
+
+    /**
+     * Create Projection Matrix from static variables (Recreate on window changes)
+     */
     private void createProjectionMatrix(){
         float aspectRatio = (float) WindowManager.WIDTH / (float) WindowManager.HEIGHT;
         float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))) * aspectRatio);
@@ -49,6 +57,10 @@ public class Renderer {
         projectionMatrix.m33(0);
     }
 
+    /**
+     * Render RawModel
+     * @param model
+     */
     public void render(RawModel model){
         glBindVertexArray(model.getVaoID());
         glEnableVertexAttribArray(0);
@@ -56,6 +68,11 @@ public class Renderer {
         glDisableVertexAttribArray(0);
         glBindVertexArray(0);
     }
+
+    /**
+     * Render Model with texture
+     * @param model TexturedModel
+     */
     public void render(TexturedModel model){
         RawModel rawModel = model.getModel();
         glBindVertexArray(rawModel.getVaoID());
@@ -67,7 +84,13 @@ public class Renderer {
         glDisableVertexAttribArray(1);
         glDisableVertexAttribArray(0);
         glBindVertexArray(0);
-    };
+    }
+
+    /**
+     * Render Model with Texture which position depends on camera position and entity transformation
+     * @param entity
+     * @param shader Static Shader
+     */
     public void render(Entity entity, StaticShader shader){
         RawModel rawModel = entity.getModel().getModel();
         glBindVertexArray(rawModel.getVaoID());

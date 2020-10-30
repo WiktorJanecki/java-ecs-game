@@ -73,6 +73,12 @@ public abstract class ShaderProgram {
         glUniformMatrix4fv(location, false, matrixBuffer);
     }
 
+    /**
+     * Load shader from file
+     * @param file file to shader
+     * @param type GL shader type
+     * @return
+     */
     private static int loadShader(String file, int type){
         StringBuilder shaderSource = new StringBuilder();
         try{

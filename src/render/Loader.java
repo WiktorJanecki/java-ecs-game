@@ -22,6 +22,13 @@ public class Loader {
     private List<Integer> vbos = new ArrayList<Integer>();
     private List<Integer> textures = new ArrayList<Integer>();
 
+    /**
+     * Load vertices and other arrays to VAO
+     * @param vertices
+     * @param textureCoords
+     * @param indices
+     * @return
+     */
     public RawModel loadToVAO(float[] vertices,float[] textureCoords , int[] indices){
         int vaoID = createVAO();
         bindIndicesBuffer(indices);
@@ -31,6 +38,11 @@ public class Loader {
         return new RawModel(vaoID,indices.length);
     }
 
+    /**
+     * Load texture and returns the id of it (PNG)
+     * @param path path to png texture relative from res folder
+     * @return
+     */
     public int loadTexture(String path) {
 
         int textureID;
@@ -44,9 +56,7 @@ public class Loader {
 
             image = stbi_load("res/"+path+".png", w, h, comp, 4);
             if (image == null) {
-                System.out.println("Failed to load texture file: "+path+"\n" +
-                        stbi_failure_reason()
-                );
+                System.err.println("Failed to load texture file: "+path+"\n");
             }
             width = w.get();
             height = h.get();
@@ -62,6 +72,9 @@ public class Loader {
         return textureID;
     }
 
+    /**
+     * Delete all buffers
+     */
     public void cleanUp(){
         for(int vao:vaos){
             glDeleteVertexArrays(vao);
@@ -74,6 +87,10 @@ public class Loader {
         }
     }
 
+    /**
+     * Create unique vertex array object id
+     * @return
+     */
     private int createVAO(){
         int vaoID = glGenVertexArrays();
         vaos.add(vaoID);
@@ -81,6 +98,12 @@ public class Loader {
         return vaoID;
     }
 
+    /**
+     * Move vbo to vao
+     * @param attributeNumber pointer
+     * @param coordinateSize count of coordinates (2 for 2D, 3 for 3D)
+     * @param data array of coordinates
+     */
     private void storeDataInAttributeList(int attributeNumber,int coordinateSize, float[]data){
         int vboID = glGenBuffers();
         vbos.add(vboID);
@@ -94,6 +117,10 @@ public class Loader {
         glBindVertexArray(0);
     }
 
+    /**
+     * Store indices in vao
+     * @param indices
+     */
     private void bindIndicesBuffer(int[] indices){
         int vboID = glGenBuffers();
         vbos.add(vboID);
