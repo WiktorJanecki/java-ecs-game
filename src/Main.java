@@ -19,6 +19,9 @@ public class Main {
         }
 
         WindowManager wm = new WindowManager();
+        long fpsStart = System.currentTimeMillis();
+        long fpsStop;
+        int fpsCount = 0;
 
         State state;
         state = new GameState();
@@ -55,25 +58,33 @@ public class Main {
         TexturedModel texturedModel = new TexturedModel(model,texture);
         Entity entity = new Entity(texturedModel,new Vector3f(0,0,-1),0,0,0,1,1,1);
         Camera camera = new Camera();
+        String title = wm.getDeveloperTitle();
 
         while ( !glfwWindowShouldClose(window) ) {
             //events
             glfwPollEvents();
 
+            //fps counter
+            {
+                fpsCount++;
+                fpsStop = System.currentTimeMillis();
+                if (fpsStop - fpsStart > 1000) {
+                    fpsStart = System.currentTimeMillis();
+                    glfwSetWindowTitle(wm.getWindow(), (title + "               FPS : " + "" + fpsCount));
+                    fpsCount = 0;
+                }
+            }
+            //
+
             //game update
             state.update();
-            //entity.increasePosition(0f,0f,-0.001f);
-
-            //prepare
-            renderer.prepare();
 
             //render
-            state.render();
-
             shader.start();
             shader.loadViewMatrix(camera);
-            renderer.render(entity,shader);
             shader.stop();
+
+            state.render();
 
             glfwSwapBuffers(window); // swap the color buffers
         }
