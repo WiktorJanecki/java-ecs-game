@@ -11,7 +11,7 @@ import static org.lwjgl.opengl.GL11.glViewport;
 
 public class WindowManager {
 
-    int WIDTH = 1280, HEIGHT = 720;
+    public static int WIDTH = 1280, HEIGHT = 720;
     long window;
 
     /**

@@ -47,13 +47,13 @@ public class Main {
                 1,0
         };
 
+        StaticShader shader = new StaticShader();
         Loader loader = new Loader();
-        Renderer renderer = new Renderer();
+        Renderer renderer = new Renderer(shader);
         RawModel model = loader.loadToVAO(vertices,textureCoords,indices);
         int texture = loader.loadTexture("texture");
         TexturedModel texturedModel = new TexturedModel(model,texture);
-        StaticShader shader = new StaticShader();
-        Entity entity = new Entity(texturedModel,new Vector3f(0,0,0),0,0,0,1,1,1);
+        Entity entity = new Entity(texturedModel,new Vector3f(0,0,-1),0,0,0,1,1,1);
 
         while ( !glfwWindowShouldClose(window) ) {
             //events
@@ -61,6 +61,7 @@ public class Main {
 
             //game update
             state.update();
+            entity.increasePosition(0f,0f,-0.001f);
 
             //prepare
             renderer.prepare();
