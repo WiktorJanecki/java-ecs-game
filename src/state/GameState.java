@@ -19,7 +19,6 @@ public class GameState extends State {
 
     @Override
     public void start(long window, StaticShader shader, StateList list){
-        list.ISSTATECHANGING = false;
         this.window = window;
         this.shader = shader;
         float[] vertices = {

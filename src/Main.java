@@ -40,7 +40,7 @@ public class Main {
 
         while ( !glfwWindowShouldClose(window) ) {
             state = stateList.getState(stateList.CHANGINGSTATEINDEX);
-            state.start(window, shader, stateList);
+            state.startScene(window, shader, stateList);
             while( !stateList.ISSTATECHANGING) {
                 //events
                 glfwPollEvents();
