@@ -1,3 +1,4 @@
+import org.joml.Vector3f;
 import render.Loader;
 import render.Renderer;
 import render.models.RawModel;
@@ -6,10 +7,9 @@ import render.shaders.StaticShader;
 import state.GameState;
 import state.State;
 import window.WindowManager;
+import entities.*;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11C.glClear;
 
 public class Main {
     public static void main(String[] args) {
@@ -53,6 +53,7 @@ public class Main {
         int texture = loader.loadTexture("texture");
         TexturedModel texturedModel = new TexturedModel(model,texture);
         StaticShader shader = new StaticShader();
+        Entity entity = new Entity(texturedModel,new Vector3f(0,0,0),0,0,0,1,1,1);
 
         while ( !glfwWindowShouldClose(window) ) {
             //events
@@ -68,7 +69,7 @@ public class Main {
             state.render();
 
             shader.start();
-            renderer.render(texturedModel);
+            renderer.render(entity,shader);
             shader.stop();
 
             glfwSwapBuffers(window); // swap the color buffers

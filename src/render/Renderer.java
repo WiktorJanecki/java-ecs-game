@@ -1,7 +1,11 @@
 package render;
 
+import org.joml.Matrix4f;
 import render.models.RawModel;
 import render.models.TexturedModel;
+import render.shaders.StaticShader;
+import entities.Entity;
+import tools.MatrixMath;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11C.glClear;
@@ -37,4 +41,19 @@ public class Renderer {
         glDisableVertexAttribArray(0);
         glBindVertexArray(0);
     };
+    public void render(Entity entity, StaticShader shader){
+        RawModel rawModel = entity.getModel().getModel();
+        glBindVertexArray(rawModel.getVaoID());
+        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(1);
+        Matrix4f transformationMatrix = MatrixMath.createTransformationMatrix(entity.getPosition(),entity.getRotationX(),entity.getRotationY(),entity.getRotationZ(),entity.getScaleX(),entity.getScaleY(),entity.getScaleZ());
+        shader.loadTransformationMatrix(transformationMatrix);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, entity.getModel().getTexture());
+        glDrawElements(GL_TRIANGLES,rawModel.getVertexCount(),GL_UNSIGNED_INT,0);
+        glDisableVertexAttribArray(1);
+        glDisableVertexAttribArray(0);
+        glBindVertexArray(0);
+
+    }
 }
