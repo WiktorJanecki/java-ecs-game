@@ -2,9 +2,8 @@ package window;
 
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
-import tools.git;
+import tools.Git;
 
-import java.lang.reflect.Executable;
 
 import static java.sql.Types.NULL;
 import static org.lwjgl.glfw.GLFW.*;
@@ -12,7 +11,7 @@ import static org.lwjgl.opengl.GL11.glViewport;
 
 public class WindowManager {
 
-    int WIDTH = 1280, HEIGHT = 720;
+    public static int WIDTH = 1280, HEIGHT = 720;
     long window;
 
     /**
@@ -96,8 +95,8 @@ public class WindowManager {
         String title = "test";
         String space = "               "; //15 spaces
         try {
-            String branch = git.getCurrentGitBranch();
-            String count = git.getTotalCommitCount();
+            String branch = Git.getCurrentGitBranch();
+            String count = Git.getTotalCommitCount();
             title = "TEST"+space+"branch: " + branch +space+"commit: " + count;
         }
         catch(Exception e){

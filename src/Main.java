@@ -1,10 +1,15 @@
+import org.joml.Vector3f;
+import render.Loader;
+import render.Renderer;
+import render.models.RawModel;
+import render.models.TexturedModel;
+import render.shaders.StaticShader;
 import state.GameState;
 import state.State;
 import window.WindowManager;
+import entities.*;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11C.glClear;
 
 public class Main {
     public static void main(String[] args) {
@@ -24,16 +29,55 @@ public class Main {
 
         state.start(window);
 
+        float[] vertices = {
+                -0.5f, 0.5f, 0,
+                -0.5f, -0.5f, 0,
+                0.5f, -0.5f, 0,
+                0.5f, 0.5f, 0f
+        };
+
+        int[] indices = {
+                0,1,3,
+                3,1,2
+        };
+        float[] textureCoords = {
+                0,0,
+                0,1,
+                1,1,
+                1,0
+        };
+
+        StaticShader shader = new StaticShader();
+        Loader loader = new Loader();
+        Renderer renderer = new Renderer(shader);
+        RawModel model = loader.loadToVAO(vertices,textureCoords,indices);
+        int texture = loader.loadTexture("texture");
+        TexturedModel texturedModel = new TexturedModel(model,texture);
+        Entity entity = new Entity(texturedModel,new Vector3f(0,0,-1),0,0,0,1,1,1);
+        Camera camera = new Camera();
+
         while ( !glfwWindowShouldClose(window) ) {
+            //events
+            glfwPollEvents();
 
+            //game update
             state.update();
+            //entity.increasePosition(0f,0f,-0.001f);
 
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            //prepare
+            renderer.prepare();
 
+            //render
             state.render();
 
+            shader.start();
+            shader.loadViewMatrix(camera);
+            renderer.render(entity,shader);
+            shader.stop();
+
             glfwSwapBuffers(window); // swap the color buffers
-            glfwPollEvents();
         }
+        loader.cleanUp();
+        shader.cleanUp();
     }
 }
