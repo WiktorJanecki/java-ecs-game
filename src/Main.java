@@ -54,6 +54,7 @@ public class Main {
         int texture = loader.loadTexture("texture");
         TexturedModel texturedModel = new TexturedModel(model,texture);
         Entity entity = new Entity(texturedModel,new Vector3f(0,0,-1),0,0,0,1,1,1);
+        Camera camera = new Camera();
 
         while ( !glfwWindowShouldClose(window) ) {
             //events
@@ -61,7 +62,7 @@ public class Main {
 
             //game update
             state.update();
-            entity.increasePosition(0f,0f,-0.001f);
+            //entity.increasePosition(0f,0f,-0.001f);
 
             //prepare
             renderer.prepare();
@@ -70,6 +71,7 @@ public class Main {
             state.render();
 
             shader.start();
+            shader.loadViewMatrix(camera);
             renderer.render(entity,shader);
             shader.stop();
 
