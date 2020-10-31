@@ -8,6 +8,7 @@ import render.Renderer;
 import render.models.RawModel;
 import render.models.TexturedModel;
 import render.shaders.StaticShader;
+import shapes.Quad;
 
 public class GameState extends State {
 
@@ -21,28 +22,11 @@ public class GameState extends State {
     public void start(long window, StaticShader shader, StateList list){
         this.window = window;
         this.shader = shader;
-        float[] vertices = {
-                -0.5f, 0.5f, 0,
-                -0.5f, -0.5f, 0,
-                0.5f, -0.5f, 0,
-                0.5f, 0.5f, 0f
-        };
-
-        int[] indices = {
-                0,1,3,
-                3,1,2
-        };
-        float[] textureCoords = {
-                0,0,
-                0,1,
-                1,1,
-                1,0
-        };
 
         loader = new Loader();
         renderer = new Renderer(shader);
 
-        RawModel model = loader.loadToVAO(vertices,textureCoords,indices);
+        RawModel model = loader.loadToVAO(Quad.vertices,Quad.textureCoords,Quad.indieces);
         int texture = loader.loadTexture("texture");
         TexturedModel texturedModel = new TexturedModel(model,texture);
 
