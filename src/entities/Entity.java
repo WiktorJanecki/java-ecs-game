@@ -1,9 +1,13 @@
 package entities;
 
+import components.Component;
 import org.joml.Vector3f;
 import render.models.TexturedModel;
 
+import java.util.LinkedList;
+
 public class Entity {
+    public LinkedList<Component> components = new LinkedList<Component>();
     private TexturedModel model;
     private Vector3f position;
     private float rotationX,rotationY,rotationZ;
@@ -19,7 +23,6 @@ public class Entity {
         this.scaleY = scaleY;
         this.scaleZ = scaleZ;
     }
-
     public void increasePosition(float x, float y, float z){
         this.position.x += x;
         this.position.y += y;
@@ -94,5 +97,9 @@ public class Entity {
 
     public void setScaleZ(float scaleZ) {
         this.scaleZ = scaleZ;
+    }
+
+    public int getID() {
+        return 0;
     }
 }
