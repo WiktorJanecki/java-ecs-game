@@ -1,11 +1,8 @@
+import managers.WindowManager;
 import state.GameState;
 import state.MenuState;
 import state.State;
 import state.StateList;
-import window.WindowManager;
-import entities.*;
-
-import managers.Manager;
 
 import static org.lwjgl.glfw.GLFW.*;
 

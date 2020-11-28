@@ -5,11 +5,11 @@ import components.MeshComponent;
 import components.TextureComponent;
 import components.TransformComponent;
 import managers.Manager;
+import managers.WindowManager;
 import org.joml.Matrix4f;
 import org.lwjgl.system.MemoryStack;
 import systems.shaders.StaticShader;
 import tools.MatrixMath;
-import window.WindowManager;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
