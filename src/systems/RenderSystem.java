@@ -1,10 +1,16 @@
 package systems;
 
+import components.CameraComponent;
 import components.MeshComponent;
 import components.TextureComponent;
+import components.TransformComponent;
+import entities.Entity;
 import managers.Manager;
 import org.joml.Matrix4f;
 import org.lwjgl.system.MemoryStack;
+import render.models.RawModel;
+import systems.shaders.StaticShader;
+import tools.MatrixMath;
 import window.WindowManager;
 
 import java.nio.ByteBuffer;
@@ -34,6 +40,9 @@ public class RenderSystem extends System {
     private List<Integer> vbos = new ArrayList<Integer>();
     private List<Integer> textures = new ArrayList<Integer>();
 
+    private StaticShader shader = new StaticShader();
+    private CameraComponent camera;
+
     public RenderSystem(){}
     public RenderSystem(Manager manager){
         this.manager = manager;
@@ -42,6 +51,17 @@ public class RenderSystem extends System {
     @Override
     public void start() {
         createProjectionMatrix();
+        shader.start();
+        shader.loadProjectionMatrix(projectionMatrix);
+        shader.stop();
+        for(var ent : manager.arrayOfEntitiesWith(CameraComponent.class)){
+            try{
+                camera = manager.getComponent(ent,CameraComponent.class);
+            }
+            catch(Exception e){
+                java.lang.System.err.println(e);
+            }
+        }
         for(var ent : manager.arrayOfEntitiesWith(MeshComponent.class)){
             try {
                 if(manager.hasComponent(ent,MeshComponent.class)) {
@@ -71,14 +91,22 @@ public class RenderSystem extends System {
     @Override
     public void render() {
         prepare();
+        shader.start();
+        shader.loadViewMatrix(camera);
         for(var ent : manager.arrayOfEntitiesWith(MeshComponent.class)){
             try {
-                renderShaderless(manager.getComponent(ent, MeshComponent.class));
+                if(manager.hasComponent(ent,TransformComponent.class)){
+                    renderWithShader(manager.getComponent(ent,MeshComponent.class),manager.getComponent(ent,TransformComponent.class));
+                }
+                else {
+                    renderShaderless(manager.getComponent(ent, MeshComponent.class));
+                }
             }
             catch(Exception e){
                 java.lang.System.err.println(e);
             }
         }
+        shader.stop();
     }
 
     @Override
@@ -103,6 +131,20 @@ public class RenderSystem extends System {
         glBindVertexArray(mesh.getVaoID());
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, mesh.getTextureID());
+        glDrawElements(GL_TRIANGLES,mesh.getVertexCount(),GL_UNSIGNED_INT,0);
+        glDisableVertexAttribArray(1);
+        glDisableVertexAttribArray(0);
+        glBindVertexArray(0);
+    }
+    private void renderWithShader(MeshComponent mesh, TransformComponent transf){
+
+        glBindVertexArray(mesh.getVaoID());
+        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(1);
+        Matrix4f transformationMatrix = MatrixMath.createTransformationMatrix(transf.getPosition(),transf.getRotationX(),transf.getRotationY(),transf.getRotationZ(),transf.getScaleX(),transf.getScaleY(),transf.getScaleZ());
+        shader.loadTransformationMatrix(transformationMatrix);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, mesh.getTextureID());
         glDrawElements(GL_TRIANGLES,mesh.getVertexCount(),GL_UNSIGNED_INT,0);

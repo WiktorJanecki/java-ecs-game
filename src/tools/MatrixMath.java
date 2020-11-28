@@ -1,5 +1,6 @@
 package tools;
 
+import components.CameraComponent;
 import entities.Camera;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -15,7 +16,7 @@ public class MatrixMath {
         matrix.scale(sx,sy,sz);
         return matrix;
     }
-    public static Matrix4f createViewMatrix(Camera camera){
+    public static Matrix4f createViewMatrix(CameraComponent camera){
         Matrix4f viewMatrix = new Matrix4f();
         viewMatrix.identity();
         viewMatrix.rotate((float) Math.toRadians(camera.getPitch()), new Vector3f(1,0,0));
