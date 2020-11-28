@@ -30,8 +30,8 @@ public class GameState extends State {
         manager.addEntity(entity);
         manager.addEntity(camera);
 
-        manager.addComponent(camera,new TransformComponent(new Vector3f(0,0,20f),0,0,0,1,1,1));
-        manager.addComponent(camera,new CameraComponent(new Vector3f(0,0,20f),0,0,0));
+        manager.addComponent(camera,new TransformComponent(new Vector3f(0,0,5f),0,0,0,1,1,1));
+        manager.addComponent(camera,new CameraComponent(new Vector3f(0,0,5f),0,0,0));
 
         manager.addComponent(entity,new MeshComponent(Quad.vertices,Quad.textureCoords,Quad.indieces));
         manager.addComponent(entity,new TransformComponent(new Vector3f(0,0,0),0,0,0,1,1,1));
@@ -60,7 +60,7 @@ public class GameState extends State {
         }
         try{
             TransformComponent transf = manager.getComponent(entity,TransformComponent.class);
-            transf.increasePosition(0,0,0.01f);
+            transf.increaseRotation(0.1f,0.1f,0.1f);
         }
         catch(Exception e){
             System.err.println(e);

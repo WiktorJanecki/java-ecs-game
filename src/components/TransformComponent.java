@@ -4,8 +4,8 @@ import org.joml.Vector3f;
 
 public class TransformComponent extends Component {
     public Vector3f position;
-    public int rotationX,rotationY,rotationZ;
-    public int scaleX, scaleY,scaleZ;
+    public float rotationX,rotationY,rotationZ;
+    public float scaleX, scaleY,scaleZ;
 
     public TransformComponent(Vector3f position, int rotationX, int rotationY, int rotationZ, int scaleX, int scaleY, int scaleZ) {
         this.position = position;
@@ -22,6 +22,11 @@ public class TransformComponent extends Component {
         this.position.y += y;
         this.position.z += z;
     }
+    public void increaseRotation(float rx, float ry, float rz){
+        rotationX += rx;
+        rotationY += ry;
+        rotationZ += rz;
+    }
 
     public Vector3f getPosition() {
         return position;
@@ -31,7 +36,7 @@ public class TransformComponent extends Component {
         this.position = position;
     }
 
-    public int getRotationX() {
+    public float getRotationX() {
         return rotationX;
     }
 
@@ -39,7 +44,7 @@ public class TransformComponent extends Component {
         this.rotationX = rotationX;
     }
 
-    public int getRotationY() {
+    public float getRotationY() {
         return rotationY;
     }
 
@@ -47,7 +52,7 @@ public class TransformComponent extends Component {
         this.rotationY = rotationY;
     }
 
-    public int getRotationZ() {
+    public float getRotationZ() {
         return rotationZ;
     }
 
@@ -55,7 +60,7 @@ public class TransformComponent extends Component {
         this.rotationZ = rotationZ;
     }
 
-    public int getScaleX() {
+    public float getScaleX() {
         return scaleX;
     }
 
@@ -63,7 +68,7 @@ public class TransformComponent extends Component {
         this.scaleX = scaleX;
     }
 
-    public int getScaleY() {
+    public float getScaleY() {
         return scaleY;
     }
 
@@ -71,7 +76,7 @@ public class TransformComponent extends Component {
         this.scaleY = scaleY;
     }
 
-    public int getScaleZ() {
+    public float getScaleZ() {
         return scaleZ;
     }
 
