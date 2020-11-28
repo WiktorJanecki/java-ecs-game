@@ -42,7 +42,7 @@ public class Manager extends Throwable {
         }
         return false;
     }
-    public LinkedList<Entity> arrayOfEntitiesWith(Component component, Class<? extends Component> cls){
+    public LinkedList<Entity> arrayOfEntitiesWith(Class<? extends Component> cls){
         LinkedList<Entity> list = new LinkedList<>();
         for(var ent : entities){
             if(hasComponent(ent,cls)){
@@ -63,12 +63,15 @@ public class Manager extends Throwable {
     public <T extends System> void removeSystem(System system){
         systems.remove(system);
     }
-    public <T extends System> T getSystems(Class<? extends System> cls) throws Exception{
+    public <T extends System> T getSystem(Class<? extends System> cls) throws Exception{
         for(System sys : systems){
             if(sys.getClass() == cls){
                 return (T) sys;
             }
         }
         throw new Exception("Failed to get " + cls.getName());
+    }
+    public LinkedList<System> getSystems(){
+        return this.systems;
     }
 }

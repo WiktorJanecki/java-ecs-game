@@ -13,6 +13,8 @@ public class Entity {
     private float rotationX,rotationY,rotationZ;
     private float scaleX,scaleY,scaleZ;
 
+
+    public Entity(){}
     public Entity(TexturedModel model, Vector3f position, float rotationX, float rotationY, float rotationZ, float scaleX, float scaleY, float scaleZ) {
         this.model = model;
         this.position = position;

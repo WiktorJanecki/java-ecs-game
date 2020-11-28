@@ -1,53 +1,60 @@
 package state;
 
 
+import components.MeshComponent;
+import components.TextureComponent;
 import entities.Entity;
-import org.joml.Vector3f;
-import render.Loader;
-import render.Renderer;
-import render.models.RawModel;
-import render.models.TexturedModel;
+import managers.Manager;
 import render.shaders.StaticShader;
 import shapes.Quad;
+import systems.RenderSystem;
 
 public class GameState extends State {
 
     private long window;
     private StaticShader shader; //Shader for mvp movement
-    private Renderer renderer;
     private Entity entity;
-    private Loader loader;
+    Manager manager= new Manager();;
 
     @Override
     public void start(long window, StaticShader shader, StateList list){
         this.window = window;
         this.shader = shader;
 
-        loader = new Loader();
-        renderer = new Renderer(shader);
+        entity = new Entity();
+        manager.addEntity(entity);
 
-        RawModel model = loader.loadToVAO(Quad.vertices,Quad.textureCoords,Quad.indieces);
-        int texture = loader.loadTexture("texture");
-        TexturedModel texturedModel = new TexturedModel(model,texture);
+        manager.addComponent(entity,new MeshComponent(Quad.vertices,Quad.textureCoords,Quad.indieces));
+        manager.addComponent(entity,new TextureComponent("texture"));
 
-        entity = new Entity(texturedModel,new Vector3f(0,0,-1),0,0,0,1,1,1);
+        RenderSystem rsys = new RenderSystem(manager);
+        manager.addSystem(rsys);
+
+        //after loading all components
+        for(var sys : manager.getSystems()){
+            sys.start();
+        }
     }
 
     @Override
     public void render() {
-        renderer.prepare();
-        renderer.render(entity,shader);
+        for(var sys : manager.getSystems()){
+            sys.render();
+        }
     }
 
     @Override
     public void update() {
-
+        for(var sys : manager.getSystems()){
+            sys.update();
+        }
     }
 
     @Override
     public void end() {
-        shader.cleanUp();
-        loader.cleanUp();
+        for(var sys : manager.getSystems()){
+            sys.end();
+        }
     }
 
     @Override

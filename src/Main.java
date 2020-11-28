@@ -23,8 +23,6 @@ public class Main {
         long fpsStop;
         int fpsCount = 0;
 
-        Manager manager = new Manager();
-
         StateList stateList = new StateList();
 
         stateList.addState(new MenuState());
@@ -64,13 +62,13 @@ public class Main {
                 state.update();
 
                 //render
-                shader.start();
+                //shader.start();
 
-                shader.loadViewMatrix(camera);
+                //shader.loadViewMatrix(camera);
 
                 state.render();
 
-                shader.stop();
+                //shader.stop();
 
                 glfwSwapBuffers(window); // swap the color buffers
                 if(glfwWindowShouldClose(window)) break;
