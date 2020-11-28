@@ -2,6 +2,7 @@ package managers;
 
 import entities.Entity;
 import components.Component;
+import events.Event;
 import systems.System;
 
 import java.util.LinkedList;
@@ -9,6 +10,8 @@ import java.util.LinkedList;
 public class Manager extends Throwable {
     LinkedList<Entity> entities = new LinkedList<>();
     LinkedList<System> systems = new LinkedList<>();
+    LinkedList<Event> events = new LinkedList<>();
+    LinkedList<Class<? extends Event>> listenings = new LinkedList<>();
 
     public void addEntity(Entity entity){
         entities.push(entity);
@@ -73,5 +76,28 @@ public class Manager extends Throwable {
     }
     public LinkedList<System> getSystems(){
         return this.systems;
+    }
+
+
+    public void listen(Class<? extends Event> cls){
+        listenings.push(cls);
+    }
+    public void initEvent(Event event){
+        events.push(event);
+    }
+    public void clearEvents(){
+        events.clear();
+        listenings.clear();
+    }
+    public  <T extends Event> T getEvent(Class<? extends Event> cls){
+        for(var ev : events){
+            if(ev.getClass() == cls){
+                return (T) ev;
+            }
+        }
+        return null;
+    }
+    public boolean isListening(Class<? extends Event> cls){
+        return listenings.contains(cls);
     }
 }

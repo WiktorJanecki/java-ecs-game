@@ -4,11 +4,13 @@ import components.CameraComponent;
 import components.MeshComponent;
 import components.TextureComponent;
 import components.TransformComponent;
+import events.KeyboardEvent;
 import input.Keyboard;
 import managers.Manager;
 import org.joml.Vector3f;
 import entities.*;
 import shapes.Quad;
+import systems.InputSystem;
 import systems.RenderSystem;
 
 
@@ -41,12 +43,17 @@ public class MenuState extends State {
         manager.addComponent(camera, new TransformComponent(new Vector3f(0,0,1),0,0,0,1,1,1));
 
         RenderSystem rsys = new RenderSystem(manager);
+        InputSystem isys = new InputSystem(manager);
+        isys.setWindow(window);
         manager.addSystem(rsys);
+        manager.addSystem(isys);
 
 
         for(var sys : manager.getSystems()){
             sys.start();
         }
+
+        manager.listen(KeyboardEvent.class);
    }
 
     @Override
@@ -62,8 +69,12 @@ public class MenuState extends State {
         for(var sys : manager.getSystems()){
             sys.update();
         }
-        if(Keyboard.isKeyDown(GLFW_KEY_SPACE,this.window)){
-            this.list.changeState(1);
+        if(manager.getEvent(KeyboardEvent.class) != null) {
+            KeyboardEvent ev = manager.getEvent(KeyboardEvent.class);
+            if (ev.key == GLFW_KEY_SPACE) {
+                manager.clearEvents();
+                this.list.changeState(1);
+            }
         }
     }
 
