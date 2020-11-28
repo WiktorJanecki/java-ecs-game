@@ -1,14 +1,13 @@
 package systems.shaders;
 
 import components.CameraComponent;
-import entities.Camera;
 import org.joml.Matrix4f;
 import tools.MatrixMath;
 
 public class StaticShader extends ShaderProgram {
 
-    private static final String VERTEX_FILE = "src/render/shaders/vertexShader.glsl";
-    private static final String FRAGMENT_FILE = "src/render/shaders/fragmentShader.glsl";
+    private static final String VERTEX_FILE = "src/systems/shaders/vertexShader.glsl";
+    private static final String FRAGMENT_FILE = "src/systems/shaders/fragmentShader.glsl";
 
     private int location_transformationMatrix;
     private int location_projectionMatrix;

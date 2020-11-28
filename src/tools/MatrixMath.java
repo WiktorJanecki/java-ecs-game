@@ -1,7 +1,6 @@
 package tools;
 
 import components.CameraComponent;
-import entities.Camera;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 

@@ -8,9 +8,9 @@ import components.TransformComponent;
 import entities.Entity;
 import managers.Manager;
 import org.joml.Vector3f;
-import render.shaders.StaticShader;
 import shapes.Quad;
 import systems.RenderSystem;
+import systems.shaders.StaticShader;
 
 public class GameState extends State {
 
@@ -21,7 +21,7 @@ public class GameState extends State {
     Manager manager= new Manager();;
 
     @Override
-    public void start(long window, StaticShader shader, StateList list){
+    public void start(long window, StateList list){
         this.window = window;
         this.shader = shader;
 

@@ -4,11 +4,9 @@ import components.CameraComponent;
 import components.MeshComponent;
 import components.TextureComponent;
 import components.TransformComponent;
-import entities.Entity;
 import managers.Manager;
 import org.joml.Matrix4f;
 import org.lwjgl.system.MemoryStack;
-import render.models.RawModel;
 import systems.shaders.StaticShader;
 import tools.MatrixMath;
 import window.WindowManager;
@@ -125,6 +123,7 @@ public class RenderSystem extends System {
         for(int texture:textures){
             glDeleteTextures(texture);
         }
+        shader.cleanUp();
     }
 
     private void renderShaderless(MeshComponent mesh){

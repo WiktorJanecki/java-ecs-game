@@ -1,13 +1,15 @@
 package state;
 
+import components.CameraComponent;
+import components.MeshComponent;
+import components.TextureComponent;
+import components.TransformComponent;
 import input.Keyboard;
+import managers.Manager;
 import org.joml.Vector3f;
-import render.Loader;
-import render.Renderer;
-import render.models.TexturedModel;
-import render.shaders.StaticShader;
 import entities.*;
 import shapes.Quad;
+import systems.RenderSystem;
 
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
@@ -16,34 +18,50 @@ import static org.lwjgl.opengl.GL11.glClearColor;
 
 public class MenuState extends State {
 
-    private Renderer renderer;
-    private Loader loader;
-    private Entity entity;
+    private Entity entity = new Entity();
+    private Entity camera = new Entity();
+    private Manager manager = new Manager();
+
     private long window;
-    private StaticShader shader;
     private StateList list;
 
     @Override
-    public void start(long window, StaticShader shader, StateList list) {
-        this.shader = shader;
+    public void start(long window, StateList list) {
         this.list = list;
         this.window = window;
-        renderer = new Renderer(shader);
-        loader = new Loader();
-        entity = new Entity(new TexturedModel(loader.loadToVAO(Quad.vertices,Quad.textureCoords,Quad.indieces),loader.loadTexture("menu")),new Vector3f(0,0,-1),0,0,0,1,1,1);
-    }
+
+        manager.addEntity(entity);
+        manager.addEntity(camera);
+
+        manager.addComponent(entity,new TransformComponent(new Vector3f(0,0,0.5f),0,0,0,1,1,1));
+        manager.addComponent(entity,new MeshComponent(Quad.vertices,Quad.textureCoords,Quad.indieces));
+        manager.addComponent(entity,new TextureComponent("menu"));
+
+        manager.addComponent(camera, new CameraComponent(new Vector3f(0,0,5),0,0,0));
+        manager.addComponent(camera, new TransformComponent(new Vector3f(0,0,1),0,0,0,1,1,1));
+
+        RenderSystem rsys = new RenderSystem(manager);
+        manager.addSystem(rsys);
+
+
+        for(var sys : manager.getSystems()){
+            sys.start();
+        }
+   }
 
     @Override
     public void render() {
-        renderer.prepare();
-
-        glClearColor(0,0,0,1);
-
-        renderer.render(entity,shader);
+        glClearColor(0,0,0,0);
+        for(var sys : manager.getSystems()){
+            sys.render();
+        }
     }
 
     @Override
     public void update() {
+        for(var sys : manager.getSystems()){
+            sys.update();
+        }
         if(Keyboard.isKeyDown(GLFW_KEY_SPACE,this.window)){
             this.list.changeState(1);
         }
@@ -51,8 +69,9 @@ public class MenuState extends State {
 
     @Override
     public void end() {
-        loader.cleanUp();
-        shader.cleanUp();
+        for(var sys : manager.getSystems()){
+            sys.end();
+        }
     }
 
     @Override
