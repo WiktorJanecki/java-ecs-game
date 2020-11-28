@@ -1,14 +1,12 @@
-package entities;
+package components;
 
 import org.joml.Vector3f;
 
-public class Camera {
+public class CameraComponent extends Component {
     private Vector3f position = new Vector3f(0,0,0);
     private float pitch;
     private float yaw;
     private float roll;
-
-    public Camera(){}
 
     public Vector3f getPosition() {
         return position;
@@ -18,6 +16,14 @@ public class Camera {
         this.position.y += position.y;
         this.position.z += position.z;
     }
+
+    public CameraComponent(Vector3f position, float pitch, float yaw, float roll) {
+        this.position = position;
+        this.pitch = pitch;
+        this.yaw = yaw;
+        this.roll = roll;
+    }
+
     public void increaseRotation(float pitch, float yaw, float roll){
         this.pitch += pitch;
         this.yaw   += yaw;

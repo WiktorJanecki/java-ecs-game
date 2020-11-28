@@ -1,13 +1,13 @@
-package render.shaders;
+package systems.shaders;
 
-import entities.Camera;
+import components.CameraComponent;
 import org.joml.Matrix4f;
 import tools.MatrixMath;
 
-public class StaticShader extends ShaderProgram{
+public class StaticShader extends ShaderProgram {
 
-    private static final String VERTEX_FILE = "src/render/shaders/vertexShader.glsl";
-    private static final String FRAGMENT_FILE = "src/render/shaders/fragmentShader.glsl";
+    private static final String VERTEX_FILE = "src/systems/shaders/vertexShader.glsl";
+    private static final String FRAGMENT_FILE = "src/systems/shaders/fragmentShader.glsl";
 
     private int location_transformationMatrix;
     private int location_projectionMatrix;
@@ -42,7 +42,7 @@ public class StaticShader extends ShaderProgram{
     public void loadProjectionMatrix(Matrix4f matrix){
         super.loadMatrix(location_projectionMatrix,matrix);
     }
-    public void loadViewMatrix(Camera camera){
+    public void loadViewMatrix(CameraComponent camera){
         super.loadMatrix(location_viewMatrix,MatrixMath.createViewMatrix(camera));
     }
 

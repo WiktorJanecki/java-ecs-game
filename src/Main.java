@@ -1,10 +1,8 @@
-import render.shaders.StaticShader;
+import managers.WindowManager;
 import state.GameState;
 import state.MenuState;
 import state.State;
 import state.StateList;
-import window.WindowManager;
-import entities.*;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -21,7 +19,6 @@ public class Main {
         long fpsStop;
         int fpsCount = 0;
 
-
         StateList stateList = new StateList();
 
         stateList.addState(new MenuState());
@@ -33,14 +30,11 @@ public class Main {
 
         long window = wm.getWindow();
 
-        StaticShader shader = new StaticShader();
-        Camera camera = new Camera();
-
         String title = wm.getDeveloperTitle();
 
         while ( !glfwWindowShouldClose(window) ) {
             state = stateList.getState(stateList.CHANGINGSTATEINDEX);
-            state.startScene(window, shader, stateList);
+            state.startScene(window, stateList);
             while( !stateList.ISSTATECHANGING) {
                 //events
                 glfwPollEvents();
@@ -61,13 +55,7 @@ public class Main {
                 state.update();
 
                 //render
-                shader.start();
-
-                shader.loadViewMatrix(camera);
-
                 state.render();
-
-                shader.stop();
 
                 glfwSwapBuffers(window); // swap the color buffers
                 if(glfwWindowShouldClose(window)) break;
