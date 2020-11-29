@@ -10,6 +10,7 @@ public class StateManager {
     public static void changeState(State state){
         setNext(state);
         current.end();
+        Manager.cleanUp();
         current = next;
         current.start();
     }

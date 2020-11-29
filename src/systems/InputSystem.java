@@ -10,17 +10,15 @@ import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
 
 public class InputSystem extends System {
 
-    public InputSystem(Manager manager){
-        this.manager = manager;
-    }
+    public InputSystem(){}
     @Override
     public void start() {
         GLFWKeyCallback keyCallback;
         glfwSetKeyCallback(WindowManager.getWindow(),keyCallback = new GLFWKeyCallback(){
             @Override
             public void invoke(long window, int key, int scancode, int action, int mods) {
-                if(manager.isListening(KeyboardEvent.class)&&action == GLFW_PRESS){
-                    manager.initEvent(new KeyboardEvent(key));
+                if(Manager.isListening(KeyboardEvent.class)&&action == GLFW_PRESS){
+                    Manager.initEvent(new KeyboardEvent(key));
                 }
             }
         });

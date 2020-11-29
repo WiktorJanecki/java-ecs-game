@@ -8,29 +8,29 @@ import systems.System;
 import java.util.LinkedList;
 
 public class Manager extends Throwable {
-    LinkedList<Entity> entities = new LinkedList<>();
-    LinkedList<System> systems = new LinkedList<>();
-    LinkedList<Event> events = new LinkedList<>();
-    LinkedList<Class<? extends Event>> listenings = new LinkedList<>();
-    private int lastID = -1;
+    private static LinkedList<Entity> entities = new LinkedList<>();
+    private static LinkedList<System> systems = new LinkedList<>();
+    private static LinkedList<Event> events = new LinkedList<>();
+    private static LinkedList<Class<? extends Event>> listenings = new LinkedList<>();
+    private static int lastID = -1;
 
-    public void addEntity(Entity entity){
+    public static void addEntity(Entity entity){
         entity.setID(generateID());
         entities.push(entity);
     }
-    public void clearEntities(Entity entity){
+    public static void clearEntities(Entity entity){
         entities.clear();
     }
 
-    public void addComponent(Entity entity,Component component){
-        if(! this.hasComponent(entity,component.getClass())){
+    public static void addComponent(Entity entity,Component component){
+        if(! hasComponent(entity,component.getClass())){
             entity.components.push(component);
         }
     }
-    public void removeComponent(Entity entity, Class<? extends Component> cls){
+    public static void removeComponent(Entity entity, Class<? extends Component> cls){
         entity.components.removeIf(component -> component.getClass() == cls);
     }
-    public <T extends Component> T getComponent(Entity entity, Class<? extends Component> cls) throws Exception{
+    public static <T extends Component> T getComponent(Entity entity, Class<? extends Component> cls) throws Exception{
         for(var comp : entity.components){
             if(comp.getClass() == cls){
                 return (T) comp;
@@ -39,7 +39,7 @@ public class Manager extends Throwable {
         throw new Exception("Failed to find "+cls.getName()+" component in entity with id:" + entity.getID());
     }
 
-    public boolean hasComponent(Entity entity, Class<? extends Component> cls){
+    public static boolean hasComponent(Entity entity, Class<? extends Component> cls){
         for(var component : entity.components){
             if(component.getClass() == cls){
                 return true;
@@ -47,7 +47,7 @@ public class Manager extends Throwable {
         }
         return false;
     }
-    public LinkedList<Entity> arrayOfEntitiesWith(Class<? extends Component> cls){
+    public static LinkedList<Entity> arrayOfEntitiesWith(Class<? extends Component> cls){
         LinkedList<Entity> list = new LinkedList<>();
         for(var ent : entities){
             if(hasComponent(ent,cls)){
@@ -57,7 +57,7 @@ public class Manager extends Throwable {
         return list;
     }
 
-    public void addSystem(System system){
+    public static void addSystem(System system){
         for(var sys : systems){
             if(sys.getClass() == system.getClass()){
                 return;
@@ -65,10 +65,10 @@ public class Manager extends Throwable {
         }
         systems.push(system);
     }
-    public <T extends System> void removeSystem(System system){
+    public static <T extends System> void removeSystem(System system){
         systems.remove(system);
     }
-    public <T extends System> T getSystem(Class<? extends System> cls) throws Exception{
+    public static <T extends System> T getSystem(Class<? extends System> cls) throws Exception{
         for(System sys : systems){
             if(sys.getClass() == cls){
                 return (T) sys;
@@ -76,22 +76,22 @@ public class Manager extends Throwable {
         }
         throw new Exception("Failed to get " + cls.getName());
     }
-    public LinkedList<System> getSystems(){
-        return this.systems;
+    public static LinkedList<System> getSystems(){
+        return systems;
     }
 
 
-    public void listen(Class<? extends Event> cls){
+    public static void listen(Class<? extends Event> cls){
         listenings.push(cls);
     }
-    public void initEvent(Event event){
+    public static void initEvent(Event event){
         events.push(event);
     }
-    public void clearEvents(){
+    public static void clearEvents(){
         events.clear();
         listenings.clear();
     }
-    public  <T extends Event> T getEvent(Class<? extends Event> cls){
+    public static  <T extends Event> T getEvent(Class<? extends Event> cls){
         for(var ev : events){
             if(ev.getClass() == cls){
                 return (T) ev;
@@ -99,15 +99,22 @@ public class Manager extends Throwable {
         }
         return null;
     }
-    public boolean isListening(Class<? extends Event> cls){
+    public static boolean isListening(Class<? extends Event> cls){
         return listenings.contains(cls);
     }
 
 
 
 
-    private int generateID(){
+    private static int generateID(){
         lastID++;
         return lastID;
+    }
+    public static void cleanUp(){
+        entities.clear();
+        systems.clear();
+        events.clear();
+        listenings.clear();
+        lastID = -1;
     }
 }

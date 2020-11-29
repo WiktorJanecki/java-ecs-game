@@ -44,7 +44,7 @@ public class RenderSystem extends System {
 
     public RenderSystem(){}
     public RenderSystem(Manager manager){
-        this.manager = manager;
+
     }
 
     @Override
@@ -53,19 +53,19 @@ public class RenderSystem extends System {
         shader.start();
         shader.loadProjectionMatrix(projectionMatrix);
         shader.stop();
-        for(var ent : manager.arrayOfEntitiesWith(CameraComponent.class)){
+        for(var ent : Manager.arrayOfEntitiesWith(CameraComponent.class)){
             try{
-                camera = manager.getComponent(ent,CameraComponent.class);
-                transf = manager.getComponent(ent,TransformComponent.class);
+                camera = Manager.getComponent(ent,CameraComponent.class);
+                transf = Manager.getComponent(ent,TransformComponent.class);
             }
             catch(Exception e){
                 java.lang.System.err.println(e);
             }
         }
-        for(var ent : manager.arrayOfEntitiesWith(MeshComponent.class)){
+        for(var ent : Manager.arrayOfEntitiesWith(MeshComponent.class)){
             try {
-                if(manager.hasComponent(ent,MeshComponent.class)) {
-                    MeshComponent mesh = manager.getComponent(ent, MeshComponent.class);
+                if(Manager.hasComponent(ent,MeshComponent.class)) {
+                    MeshComponent mesh = Manager.getComponent(ent, MeshComponent.class);
                     int vaoID = createVAO();
                     bindIndicesBuffer(mesh.getIndices());
                     storeDataInAttributeList(0,3,mesh.getPositions());
@@ -76,8 +76,8 @@ public class RenderSystem extends System {
                     mesh.setPositions(null);
                     mesh.setTextures(null);
                     mesh.setIndices(null);
-                    if(manager.hasComponent(ent,TextureComponent.class)) {
-                        TextureComponent txt = manager.getComponent(ent, TextureComponent.class);
+                    if(Manager.hasComponent(ent,TextureComponent.class)) {
+                        TextureComponent txt = Manager.getComponent(ent, TextureComponent.class);
                         mesh.setTextureID(loadTexture(txt.getPath()));
                     }
                 }
@@ -97,13 +97,13 @@ public class RenderSystem extends System {
         }else {
             shader.loadViewMatrix(camera,transf);
         }
-        for(var ent : manager.arrayOfEntitiesWith(MeshComponent.class)){
+        for(var ent : Manager.arrayOfEntitiesWith(MeshComponent.class)){
             try {
-                if(manager.hasComponent(ent,TransformComponent.class)){
-                    renderWithShader(manager.getComponent(ent,MeshComponent.class),manager.getComponent(ent,TransformComponent.class));
+                if(Manager.hasComponent(ent,TransformComponent.class)){
+                    renderWithShader(Manager.getComponent(ent,MeshComponent.class),Manager.getComponent(ent,TransformComponent.class));
                 }
                 else {
-                    renderShaderless(manager.getComponent(ent, MeshComponent.class));
+                    renderShaderless(Manager.getComponent(ent, MeshComponent.class));
                 }
             }
             catch(Exception e){
