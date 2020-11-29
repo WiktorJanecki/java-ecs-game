@@ -1,8 +1,7 @@
 import managers.StateManager;
+import managers.TimeManager;
 import managers.WindowManager;
-import state.GameState;
 import state.MenuState;
-import state.State;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -14,40 +13,23 @@ public class Main {
             System.exit(1);
         }
 
-        long fpsStart = System.currentTimeMillis();
-        long fpsStop;
-        int fpsCount = 0;
-
         WindowManager.createWindow(1280,720,WindowManager.getDeveloperTitle());
 
-        long window = WindowManager.getWindow();
-
-        String title = WindowManager.getDeveloperTitle();
-
         StateManager.setCurrent(new MenuState());
-        while ( !glfwWindowShouldClose(window) ) {
+        while ( !glfwWindowShouldClose(WindowManager.getWindow()) ) {
             //events
             glfwPollEvents();
 
-            //fps counter
-            {
-                fpsCount++;
-                fpsStop = System.currentTimeMillis();
-                if (fpsStop - fpsStart > 1000) {
-                    fpsStart = System.currentTimeMillis();
-                    glfwSetWindowTitle(WindowManager.getWindow(), (title + "               FPS : " + "" + fpsCount));
-                    fpsCount = 0;
-                }
-            }
-            //
-
             //game update
+            TimeManager.countFPS();
+            TimeManager.countDT();
+
             StateManager.getCurrent().update();
 
             //render
             StateManager.getCurrent().render();
 
-            glfwSwapBuffers(window); // swap the color buffers
+            glfwSwapBuffers(WindowManager.getWindow()); // swap the color buffers
         }
         StateManager.getCurrent().end();
     }
@@ -56,3 +38,4 @@ public class Main {
 //TODO
 // Entity parent - children system
 // Entity parent - system multiply transform comp
+// Create TimeManager do every second callback and move windows title change to this callback from time manager
