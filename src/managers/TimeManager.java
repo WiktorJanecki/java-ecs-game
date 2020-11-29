@@ -13,13 +13,16 @@ public class TimeManager {
         dt = (float)(System.currentTimeMillis() - dtStart)/ (float) 1000;
     }
 
+
+    //TODO delete
+    private static String title = WindowManager.getDeveloperTitle();
     private static int temporaryFPS = 0;
     public static void countFPS(){
         if(System.currentTimeMillis()-fpsStart >= 1000){
             fps = temporaryFPS;
             temporaryFPS = 0;
             fpsStart = System.currentTimeMillis();
-            glfwSetWindowTitle(WindowManager.getWindow(), (WindowManager.getDeveloperTitle() + "               FPS : " + "" + fps));
+            glfwSetWindowTitle(WindowManager.getWindow(), (title+ "               FPS : " + "" + fps));
         }
         temporaryFPS++;
     }
