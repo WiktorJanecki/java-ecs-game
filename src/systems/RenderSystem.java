@@ -40,6 +40,7 @@ public class RenderSystem extends System {
 
     private StaticShader shader = new StaticShader();
     private CameraComponent camera;
+    private TransformComponent transf;
 
     public RenderSystem(){}
     public RenderSystem(Manager manager){
@@ -55,6 +56,7 @@ public class RenderSystem extends System {
         for(var ent : manager.arrayOfEntitiesWith(CameraComponent.class)){
             try{
                 camera = manager.getComponent(ent,CameraComponent.class);
+                transf = manager.getComponent(ent,TransformComponent.class);
             }
             catch(Exception e){
                 java.lang.System.err.println(e);
@@ -90,7 +92,11 @@ public class RenderSystem extends System {
     public void render() {
         prepare();
         shader.start();
-        shader.loadViewMatrix(camera);
+        if(camera == null && transf == null){
+            java.lang.System.err.println("Error: Camera not found. There must be a entity with either camera and transform component");
+        }else {
+            shader.loadViewMatrix(camera,transf);
+        }
         for(var ent : manager.arrayOfEntitiesWith(MeshComponent.class)){
             try {
                 if(manager.hasComponent(ent,TransformComponent.class)){

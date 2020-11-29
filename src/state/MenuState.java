@@ -34,11 +34,11 @@ public class MenuState extends State {
         manager.addEntity(entity);
         manager.addEntity(camera);
 
-        manager.addComponent(entity,new TransformComponent(new Vector3f(0,0,0.5f),0,0,0,1,1,1));
+        manager.addComponent(entity,new TransformComponent(new Vector3f(0,0,0),0,0,0,1,1,1));
         manager.addComponent(entity,new MeshComponent(Quad.vertices,Quad.textureCoords,Quad.indieces));
         manager.addComponent(entity,new TextureComponent("menu"));
 
-        manager.addComponent(camera, new CameraComponent(new Vector3f(0,0,5),0,0,0));
+        manager.addComponent(camera, new CameraComponent(0,0,0));
         manager.addComponent(camera, new TransformComponent(new Vector3f(0,0,1),0,0,0,1,1,1));
 
         RenderSystem rsys = new RenderSystem(manager);

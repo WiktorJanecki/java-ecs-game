@@ -1,24 +1,12 @@
 package components;
 
-import org.joml.Vector3f;
 
 public class CameraComponent extends Component {
-    private Vector3f position = new Vector3f(0,0,0);
     private float pitch;
     private float yaw;
     private float roll;
 
-    public Vector3f getPosition() {
-        return position;
-    }
-    public void increasePosition(Vector3f position){
-        this.position.x += position.x;
-        this.position.y += position.y;
-        this.position.z += position.z;
-    }
-
-    public CameraComponent(Vector3f position, float pitch, float yaw, float roll) {
-        this.position = position;
+    public CameraComponent(float pitch, float yaw, float roll) {
         this.pitch = pitch;
         this.yaw = yaw;
         this.roll = roll;
@@ -30,9 +18,6 @@ public class CameraComponent extends Component {
         this.roll  += roll;
     }
 
-    public void setPosition(Vector3f position) {
-        this.position = position;
-    }
 
     public float getPitch() {
         return pitch;
