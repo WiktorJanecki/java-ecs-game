@@ -1,3 +1,4 @@
+import managers.Manager;
 import managers.StateManager;
 import managers.TimeManager;
 import managers.WindowManager;
@@ -25,6 +26,7 @@ public class Main {
             TimeManager.countDT();
 
             StateManager.getCurrent().update();
+            Manager.clearEvents();
 
             //render
             StateManager.getCurrent().render();
@@ -36,6 +38,5 @@ public class Main {
 }
 
 //TODO
-// Entity parent - children system
-// Entity parent - system multiply transform comp
+//Make possible to obsłuzyc multiple events (see Inheritance system and )
 // Create TimeManager do every second callback and move windows title change to this callback from time manager

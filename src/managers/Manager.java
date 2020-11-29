@@ -18,6 +18,14 @@ public class Manager extends Throwable {
         entity.setID(generateID());
         entities.push(entity);
     }
+    public static Entity getEntity(int id) throws Exception{
+        for(var ent : entities){
+            if(ent.getID() == id){
+                return ent;
+            }
+        }
+        throw new Exception("Cannot find an entity with id: "+id);
+    }
     public static void clearEntities(Entity entity){
         entities.clear();
     }
@@ -89,15 +97,15 @@ public class Manager extends Throwable {
     }
     public static void clearEvents(){
         events.clear();
-        listenings.clear();
     }
-    public static  <T extends Event> T getEvent(Class<? extends Event> cls){
+    public static  <T extends Event> LinkedList<T> getEvent(Class<? extends Event> cls){
+        LinkedList<T> list = new LinkedList<>();
         for(var ev : events){
             if(ev.getClass() == cls){
-                return (T) ev;
+                list.push((T) ev);
             }
         }
-        return null;
+        return list;
     }
     public static boolean isListening(Class<? extends Event> cls){
         return listenings.contains(cls);

@@ -3,12 +3,13 @@ package components;
 import org.joml.Vector3f;
 
 public class TransformComponent extends Component {
-    public Vector3f position;
+    public Vector3f absolutePosition;
+    public Vector3f relativePosition;
     public float rotationX,rotationY,rotationZ;
     public float scaleX, scaleY,scaleZ;
 
-    public TransformComponent(Vector3f position, int rotationX, int rotationY, int rotationZ, int scaleX, int scaleY, int scaleZ) {
-        this.position = position;
+    public TransformComponent(Vector3f position, int rotationX, int rotationY, int rotationZ, int scaleX, int scaleY, int scaleZ ) {
+        this.relativePosition = position;
         this.rotationX = rotationX;
         this.rotationY = rotationY;
         this.rotationZ = rotationZ;
@@ -17,10 +18,18 @@ public class TransformComponent extends Component {
         this.scaleZ = scaleZ;
     }
 
+    public Vector3f getRelativePosition() {
+        return relativePosition;
+    }
+
+    public void setRelativePosition(Vector3f relativePosition) {
+        this.relativePosition = relativePosition;
+    }
+
     public void increasePosition(float x, float y, float z){
-        this.position.x += x;
-        this.position.y += y;
-        this.position.z += z;
+        this.absolutePosition.x += x;
+        this.absolutePosition.y += y;
+        this.absolutePosition.z += z;
     }
     public void increaseRotation(float rx, float ry, float rz){
         rotationX += rx;
@@ -29,11 +38,11 @@ public class TransformComponent extends Component {
     }
 
     public Vector3f getPosition() {
-        return position;
+        return absolutePosition;
     }
 
     public void setPosition(Vector3f position) {
-        this.position = position;
+        this.absolutePosition = position;
     }
 
     public float getRotationX() {

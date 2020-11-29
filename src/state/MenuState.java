@@ -10,6 +10,7 @@ import managers.StateManager;
 import org.joml.Vector3f;
 import entities.*;
 import shapes.Quad;
+import systems.InheritanceSystem;
 import systems.InputSystem;
 import systems.RenderSystem;
 
@@ -38,9 +39,11 @@ public class MenuState extends State {
 
         RenderSystem rsys = new RenderSystem();
         InputSystem isys = new InputSystem();
+        InheritanceSystem insys = new InheritanceSystem();
 
         Manager.addSystem(rsys);
         Manager.addSystem(isys);
+        Manager.addSystem(insys);
 
 
         for(var sys : Manager.getSystems()){
@@ -63,10 +66,9 @@ public class MenuState extends State {
         for(var sys : Manager.getSystems()){
             sys.update();
         }
-        if(Manager.getEvent(KeyboardEvent.class) != null) {
-            KeyboardEvent ev = Manager.getEvent(KeyboardEvent.class);
-            if (ev.key == GLFW_KEY_SPACE) {
-                Manager.clearEvents();
+        for( var ev : Manager.getEvent(KeyboardEvent.class)) {
+            KeyboardEvent cev = (KeyboardEvent) ev;
+            if (cev.key == GLFW_KEY_SPACE) {
                 StateManager.changeState(new GameState());
             }
         }

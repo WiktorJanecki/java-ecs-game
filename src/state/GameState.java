@@ -9,30 +9,59 @@ import entities.Entity;
 import managers.Manager;
 import org.joml.Vector3f;
 import shapes.Quad;
+import systems.InheritanceSystem;
+import systems.PhysicsSystem;
 import systems.RenderSystem;
 
 public class GameState extends State {
 
     private Entity entity;
+    private Entity entity2;
+    private Entity entity3;
+    private Entity entity4;
     private Entity camera;
 
     @Override
     public void start(){
 
         entity = new Entity();
+        entity2 = new Entity();
+        entity3 = new Entity();
+        entity4 = new Entity();
         camera = new Entity();
         Manager.addEntity(entity);
+        Manager.addEntity(entity2);
+        Manager.addEntity(entity3);
+        Manager.addEntity(entity4);
         Manager.addEntity(camera);
 
         Manager.addComponent(camera,new TransformComponent(new Vector3f(0,0,5f),0,0,0,1,1,1));
         Manager.addComponent(camera,new CameraComponent(0,0,0));
 
         Manager.addComponent(entity,new MeshComponent(Quad.vertices,Quad.textureCoords,Quad.indieces));
-        Manager.addComponent(entity,new TransformComponent(new Vector3f(0,0,0),0,0,0,1,1,1));
+        Manager.addComponent(entity,new TransformComponent(new Vector3f(2,0,0),0,0,0,1,2,1));
         Manager.addComponent(entity,new TextureComponent("texture"));
 
+        entity2.setParentID(entity.getID());
+        Manager.addComponent(entity2,new MeshComponent(Quad.vertices,Quad.textureCoords,Quad.indieces));
+        Manager.addComponent(entity2,new TransformComponent(new Vector3f(-3f,0,0),0,0,0,1,1,1));
+        Manager.addComponent(entity2,new TextureComponent("texture"));
+
+        Manager.addComponent(entity3,new MeshComponent(Quad.vertices,Quad.textureCoords,Quad.indieces));
+        Manager.addComponent(entity3,new TransformComponent(new Vector3f(2,1,0),0,0,0,1,2,1));
+        Manager.addComponent(entity3,new TextureComponent("texture"));
+
+        entity4.setParentID(entity3.getID());
+        Manager.addComponent(entity4,new MeshComponent(Quad.vertices,Quad.textureCoords,Quad.indieces));
+        Manager.addComponent(entity4,new TransformComponent(new Vector3f(-3f,1,0),0,0,0,1,1,1));
+        Manager.addComponent(entity4,new TextureComponent("texture"));
+
         RenderSystem rsys = new RenderSystem();
+        InheritanceSystem insys = new InheritanceSystem();
+        PhysicsSystem psys = new PhysicsSystem();
         Manager.addSystem(rsys);
+        Manager.addSystem(insys);
+        Manager.addSystem(psys);
 
         //after loading all components
         for(var sys : Manager.getSystems()){
@@ -51,13 +80,6 @@ public class GameState extends State {
     public void update() {
         for(var sys : Manager.getSystems()){
             sys.update();
-        }
-        try{
-            TransformComponent transf = Manager.getComponent(entity,TransformComponent.class);
-            transf.increaseRotation(0.1f,0.1f,0.1f);
-        }
-        catch(Exception e){
-            System.err.println(e);
         }
     }
 
