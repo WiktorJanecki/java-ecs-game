@@ -12,7 +12,7 @@ import static org.lwjgl.opengl.GL11.glViewport;
 public class WindowManager {
 
     public static int WIDTH = 1280, HEIGHT = 720;
-    long window;
+    static long window;
 
     /**
      *  Completely empty
@@ -25,11 +25,11 @@ public class WindowManager {
      * @param height height of the window (must be greater than 0)
      * @param title title of the window (only on windowed mode)
      */
-    public void createWindow(int width, int height, String title){
+    public static void createWindow(int width, int height, String title){
         if(width > 0 && height > 0) {
-            this.WIDTH = width;
-            this.HEIGHT = height;
-            this.window = glfwCreateWindow(WIDTH, HEIGHT, title, NULL, NULL);
+            WIDTH = width;
+            HEIGHT = height;
+            window = glfwCreateWindow(WIDTH, HEIGHT, title, NULL, NULL);
 
             //Check is the window well
             if(window == 0){
@@ -38,7 +38,7 @@ public class WindowManager {
 
         }else{
             System.err.println("Failed to create window (window width and height must be greater than 0)!");
-            this.window = glfwCreateWindow(WIDTH, HEIGHT, "", NULL, NULL);
+            window = glfwCreateWindow(WIDTH, HEIGHT, "", NULL, NULL);
         }
             setWindowAttributes();
     }
@@ -48,11 +48,11 @@ public class WindowManager {
      * @param width width of the window (must be greater than 0)
      * @param height height of the window (must be greater than 0)
      */
-    public void createWindow(int width, int height){
+    public static void createWindow(int width, int height){
         if(width > 0 && height > 0){
-        this.WIDTH = width;
-        this.HEIGHT = height;
-        this.window = glfwCreateWindow(WIDTH, HEIGHT, "dreamRPG", NULL, NULL);
+        WIDTH = width;
+        HEIGHT = height;
+        window = glfwCreateWindow(WIDTH, HEIGHT, "dreamRPG", NULL, NULL);
 
         //Check is the window well
         if(window == 0){
@@ -61,7 +61,7 @@ public class WindowManager {
 
         }else{
             System.err.println("Failed to create window (window width and height must be greater than 0)!");
-            this.window = glfwCreateWindow(WIDTH, HEIGHT, "", NULL, NULL);
+            window = glfwCreateWindow(WIDTH, HEIGHT, "", NULL, NULL);
         }
         setWindowAttributes();
     }
@@ -69,7 +69,7 @@ public class WindowManager {
     /**
      * Set default openGL configuration etc,
      */
-    private void setWindowAttributes(){
+    private static void setWindowAttributes(){
         //Center window position
         GLFWVidMode videoMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         glfwSetWindowPos(window,(videoMode.width() - WIDTH) / 2 ,(videoMode.height() - HEIGHT) /2);
@@ -83,15 +83,15 @@ public class WindowManager {
         glfwSwapInterval(0);
     }
 
-    public long getWindow(){
-        return this.window;
+    public static long getWindow(){
+        return window;
     }
 
     /**
      * Create string from git current branch name and total commit count
      * @return string title
      */
-    public String getDeveloperTitle(){
+    public static String getDeveloperTitle(){
         String title = "test";
         String space = "               "; //15 spaces
         try {

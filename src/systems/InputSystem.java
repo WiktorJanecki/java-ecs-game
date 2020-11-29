@@ -2,6 +2,7 @@ package systems;
 
 import events.KeyboardEvent;
 import managers.Manager;
+import managers.WindowManager;
 import org.lwjgl.glfw.GLFWKeyCallback;
 
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
@@ -15,7 +16,7 @@ public class InputSystem extends System {
     @Override
     public void start() {
         GLFWKeyCallback keyCallback;
-        glfwSetKeyCallback(window,keyCallback = new GLFWKeyCallback(){
+        glfwSetKeyCallback(WindowManager.getWindow(),keyCallback = new GLFWKeyCallback(){
             @Override
             public void invoke(long window, int key, int scancode, int action, int mods) {
                 if(manager.isListening(KeyboardEvent.class)&&action == GLFW_PRESS){

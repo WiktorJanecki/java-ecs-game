@@ -6,6 +6,7 @@ import components.TextureComponent;
 import components.TransformComponent;
 import events.KeyboardEvent;
 import managers.Manager;
+import managers.StateManager;
 import org.joml.Vector3f;
 import entities.*;
 import shapes.Quad;
@@ -23,14 +24,9 @@ public class MenuState extends State {
     private Entity camera = new Entity();
     private Manager manager = new Manager();
 
-    private long window;
-    private StateList list;
 
     @Override
-    public void start(long window, StateList list) {
-        this.list = list;
-        this.window = window;
-
+    public void start() {
         manager.addEntity(entity);
         manager.addEntity(camera);
 
@@ -43,7 +39,7 @@ public class MenuState extends State {
 
         RenderSystem rsys = new RenderSystem(manager);
         InputSystem isys = new InputSystem(manager);
-        isys.setWindow(window);
+
         manager.addSystem(rsys);
         manager.addSystem(isys);
 
@@ -72,7 +68,7 @@ public class MenuState extends State {
             KeyboardEvent ev = manager.getEvent(KeyboardEvent.class);
             if (ev.key == GLFW_KEY_SPACE) {
                 manager.clearEvents();
-                this.list.changeState(1);
+                StateManager.changeState(new GameState());
             }
         }
     }

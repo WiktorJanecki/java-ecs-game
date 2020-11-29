@@ -21,7 +21,7 @@ public class GameState extends State {
     Manager manager= new Manager();;
 
     @Override
-    public void start(long window, StateList list){
+    public void start(){
         this.window = window;
         this.shader = shader;
 

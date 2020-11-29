@@ -12,8 +12,10 @@ public class Manager extends Throwable {
     LinkedList<System> systems = new LinkedList<>();
     LinkedList<Event> events = new LinkedList<>();
     LinkedList<Class<? extends Event>> listenings = new LinkedList<>();
+    private int lastID = -1;
 
     public void addEntity(Entity entity){
+        entity.setID(generateID());
         entities.push(entity);
     }
     public void clearEntities(Entity entity){
@@ -99,5 +101,13 @@ public class Manager extends Throwable {
     }
     public boolean isListening(Class<? extends Event> cls){
         return listenings.contains(cls);
+    }
+
+
+
+
+    private int generateID(){
+        lastID++;
+        return lastID;
     }
 }

@@ -1,8 +1,8 @@
+import managers.StateManager;
 import managers.WindowManager;
 import state.GameState;
 import state.MenuState;
 import state.State;
-import state.StateList;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -14,53 +14,45 @@ public class Main {
             System.exit(1);
         }
 
-        WindowManager wm = new WindowManager();
         long fpsStart = System.currentTimeMillis();
         long fpsStop;
         int fpsCount = 0;
 
-        StateList stateList = new StateList();
+        WindowManager.createWindow(1280,720,WindowManager.getDeveloperTitle());
 
-        stateList.addState(new MenuState());
-        stateList.addState(new GameState());
+        long window = WindowManager.getWindow();
 
-        State state;
+        String title = WindowManager.getDeveloperTitle();
 
-        wm.createWindow(1280,720,wm.getDeveloperTitle());
-
-        long window = wm.getWindow();
-
-        String title = wm.getDeveloperTitle();
-
+        StateManager.setCurrent(new MenuState());
         while ( !glfwWindowShouldClose(window) ) {
-            state = stateList.getState(stateList.CHANGINGSTATEINDEX);
-            state.startScene(window, stateList);
-            while( !stateList.ISSTATECHANGING) {
-                //events
-                glfwPollEvents();
+            //events
+            glfwPollEvents();
 
-                //fps counter
-                {
-                    fpsCount++;
-                    fpsStop = System.currentTimeMillis();
-                    if (fpsStop - fpsStart > 1000) {
-                        fpsStart = System.currentTimeMillis();
-                        glfwSetWindowTitle(wm.getWindow(), (title + "               FPS : " + "" + fpsCount));
-                        fpsCount = 0;
-                    }
+            //fps counter
+            {
+                fpsCount++;
+                fpsStop = System.currentTimeMillis();
+                if (fpsStop - fpsStart > 1000) {
+                    fpsStart = System.currentTimeMillis();
+                    glfwSetWindowTitle(WindowManager.getWindow(), (title + "               FPS : " + "" + fpsCount));
+                    fpsCount = 0;
                 }
-                //
-
-                //game update
-                state.update();
-
-                //render
-                state.render();
-
-                glfwSwapBuffers(window); // swap the color buffers
-                if(glfwWindowShouldClose(window)) break;
             }
+            //
+
+            //game update
+            StateManager.getCurrent().update();
+
+            //render
+            StateManager.getCurrent().render();
+
+            glfwSwapBuffers(window); // swap the color buffers
         }
-        stateList.cleanUp();
+        StateManager.getCurrent().end();
     }
 }
+
+//TODO
+// Entity parent - children system
+// Entity parent - system multiply transform comp
