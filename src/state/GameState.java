@@ -1,10 +1,7 @@
 package state;
 
 
-import components.CameraComponent;
-import components.MeshComponent;
-import components.TextureComponent;
-import components.TransformComponent;
+import components.*;
 import entities.Entity;
 import managers.Manager;
 import org.joml.Vector3f;
@@ -40,6 +37,7 @@ public class GameState extends State {
 
         Manager.addComponent(entity,new MeshComponent(Quad.vertices,Quad.textureCoords,Quad.indieces));
         Manager.addComponent(entity,new TransformComponent(new Vector3f(2,0,0),0,0,0,1,2,1));
+        Manager.addComponent(entity,new PhysicsComponent());
         Manager.addComponent(entity,new TextureComponent("texture"));
 
         entity2.setParentID(entity.getID());

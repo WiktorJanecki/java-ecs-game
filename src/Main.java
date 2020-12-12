@@ -7,7 +7,6 @@ import state.MenuState;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Main {
-
     public static void main(String[] args) {
         if ( !glfwInit() ){
             System.err.println("Unable to initialize GLFW");
@@ -15,7 +14,6 @@ public class Main {
         }
 
         WindowManager.createWindow(1280,720,WindowManager.getDeveloperTitle());
-
         StateManager.setCurrent(new MenuState());
         while ( !glfwWindowShouldClose(WindowManager.getWindow()) ) {
             //events
@@ -38,5 +36,4 @@ public class Main {
 }
 
 //TODO
-//Make possible to obsłuzyc multiple events (see Inheritance system and )
 // Create TimeManager do every second callback and move windows title change to this callback from time manager

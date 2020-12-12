@@ -11,6 +11,7 @@ public class TimeManager {
 
     public static void countDT(){
         dt = (float)(System.currentTimeMillis() - dtStart)/ (float) 1000;
+        dtStart = System.currentTimeMillis();
     }
 
 
