@@ -3,12 +3,14 @@ package systems;
 import components.PhysicsComponent;
 import components.TransformComponent;
 import entities.Entity;
+import events.ChangePositionEvent;
 import managers.Manager;
 import managers.TimeManager;
 
 public class PhysicsSystem extends System {
 
     private final static float gravity = 10f;
+    private final static float maxVelocity = 2;
 
     @Override
     public void start() {
@@ -42,6 +44,40 @@ public class PhysicsSystem extends System {
 
             //pc.increaseVelocity(0,-gravity*dt,0); for gravity
 
+            pc.increaseVelocity(pc.getAcceleration().x*dt,pc.getAcceleration().y*dt,pc.getAcceleration().z*dt);
+            if(pc.getVelocity().x > 0){
+                pc.increaseVelocity(dt*-pc.getFriction(),0,0);
+            }
+            if(pc.getVelocity().x < 0){
+                pc.increaseVelocity(dt*pc.getFriction(),0,0);
+            }
+
+            if(pc.getVelocity().y > 0){
+                pc.increaseVelocity(0,dt*-pc.getFriction(),0);
+            }
+            if(pc.getVelocity().y < 0){
+                pc.increaseVelocity(0,dt*pc.getFriction(),0);
+            }
+
+            if(pc.getVelocity().x > maxVelocity){
+                pc.setVelocityX(maxVelocity);
+            }
+            if(pc.getVelocity().x < -maxVelocity){
+                pc.setVelocityX(-maxVelocity);
+            }
+
+            if(pc.getVelocity().y > maxVelocity){
+                pc.setVelocityY(maxVelocity);
+            }
+            if(pc.getVelocity().y < -maxVelocity){
+                pc.setVelocityY(-maxVelocity);
+            }
+
+            if(pc.getVelocity().x*dt != 0 && pc.getVelocity().y*dt != 0 && pc.getVelocity().z*dt != 0){
+                ChangePositionEvent ev = new ChangePositionEvent();
+                ev.setMovedEntityID(ent.getID());
+                Manager.initEvent(ev);
+            }
             tc.increasePosition(pc.getVelocity().x*dt,pc.getVelocity().y*dt,pc.getVelocity().z*dt);
 
 

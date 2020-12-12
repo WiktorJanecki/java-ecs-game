@@ -68,7 +68,7 @@ public class MenuState extends State {
         }
         for( var ev : Manager.getEvent(KeyboardEvent.class)) {
             KeyboardEvent cev = (KeyboardEvent) ev;
-            if (cev.key == GLFW_KEY_SPACE) {
+            if (cev.getKey() == GLFW_KEY_SPACE) {
                 StateManager.changeState(new GameState());
             }
         }
