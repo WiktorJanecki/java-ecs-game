@@ -2,7 +2,7 @@ package managers;
 
 import entities.Entity;
 import components.Component;
-import events.Event;
+import events.*;
 import systems.System;
 
 import java.util.LinkedList;
@@ -10,8 +10,6 @@ import java.util.LinkedList;
 public class Manager extends Throwable {
     private static LinkedList<Entity> entities = new LinkedList<>();
     private static LinkedList<System> systems = new LinkedList<>();
-    private static LinkedList<Event> events = new LinkedList<>();
-    private static LinkedList<Class<? extends Event>> listenings = new LinkedList<>();
     private static int lastID = -1;
 
     public static void addEntity(Entity entity){
@@ -89,29 +87,16 @@ public class Manager extends Throwable {
     }
 
 
-    public static void listen(Class<? extends Event> cls){
-        listenings.push(cls);
-    }
     public static void initEvent(Event event){
-        events.push(event);
+       for(var sys : systems){
+           if(sys instanceof Listener){
+                ((Listener) sys).onEvent(event);
+           }
+       }
+       if(StateManager.getCurrent() instanceof Listener){
+           ((Listener) StateManager.getCurrent()).onEvent(event);
+       }
     }
-    public static void clearEvents(){
-        events.clear();
-    }
-    public static  <T extends Event> LinkedList<T> getEvent(Class<? extends Event> cls){
-        LinkedList<T> list = new LinkedList<>();
-        for(var ev : events){
-            if(ev.getClass() == cls){
-                list.push((T) ev);
-            }
-        }
-        return list;
-    }
-    public static boolean isListening(Class<? extends Event> cls){
-        return listenings.contains(cls);
-    }
-
-
 
 
     private static int generateID(){
@@ -121,8 +106,6 @@ public class Manager extends Throwable {
     public static void cleanUp(){
         entities.clear();
         systems.clear();
-        events.clear();
-        listenings.clear();
         lastID = -1;
     }
 }

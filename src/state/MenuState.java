@@ -4,7 +4,10 @@ import components.CameraComponent;
 import components.MeshComponent;
 import components.TextureComponent;
 import components.TransformComponent;
+import events.Event;
+import events.GamepadEvent;
 import events.KeyboardEvent;
+import events.Listener;
 import managers.Manager;
 import managers.StateManager;
 import org.joml.Vector3f;
@@ -19,7 +22,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 import static org.lwjgl.opengl.GL11.glClearColor;
 
 
-public class MenuState extends State {
+public class MenuState extends State implements Listener {
 
     private Entity entity = new Entity();
     private Entity camera = new Entity();
@@ -37,20 +40,14 @@ public class MenuState extends State {
         Manager.addComponent(camera, new CameraComponent(0,0,0));
         Manager.addComponent(camera, new TransformComponent(new Vector3f(0,0,1),0,0,0,1,1,1));
 
-        RenderSystem rsys = new RenderSystem();
-        InputSystem isys = new InputSystem();
-        InheritanceSystem insys = new InheritanceSystem();
-
-        Manager.addSystem(rsys);
-        Manager.addSystem(isys);
-        Manager.addSystem(insys);
+        Manager.addSystem(new RenderSystem());
+        Manager.addSystem(new InputSystem());
+        Manager.addSystem(new InheritanceSystem());
 
 
         for(var sys : Manager.getSystems()){
             sys.start();
         }
-
-        Manager.listen(KeyboardEvent.class);
    }
 
     @Override
@@ -66,12 +63,6 @@ public class MenuState extends State {
         for(var sys : Manager.getSystems()){
             sys.update();
         }
-        for( var ev : Manager.getEvent(KeyboardEvent.class)) {
-            KeyboardEvent cev = (KeyboardEvent) ev;
-            if (cev.getKey() == GLFW_KEY_SPACE) {
-                StateManager.changeState(new GameState());
-            }
-        }
     }
 
     @Override
@@ -84,5 +75,15 @@ public class MenuState extends State {
     @Override
     protected void tick() {
 
+    }
+
+    @Override
+    public void onEvent(Event event) {
+            if(event.getClass() == KeyboardEvent.class) {
+                KeyboardEvent kv = (KeyboardEvent) event;
+                if (kv.getKey() == GLFW_KEY_SPACE) {
+                    StateManager.changeState(new GameState());
+                }
+            }
     }
 }

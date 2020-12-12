@@ -2,18 +2,17 @@ package systems;
 
 import components.PhysicsComponent;
 import entities.Player;
-import events.Event;
-import events.GamepadEvent;
+import events.*;
 import managers.Manager;
 import entities.Entity;
 import org.joml.Vector3f;
 
 
-public class MovementSystem extends System {
+public class MovementSystem extends System implements Listener {
 
     @Override
     public void start() {
-        Manager.listen(GamepadEvent.class);
+
     }
 
     @Override
@@ -23,8 +22,18 @@ public class MovementSystem extends System {
 
     @Override
     public void update() {
-        for(var ev : Manager.getEvent(GamepadEvent.class)) {
-            GamepadEvent gev = (GamepadEvent) ev;
+
+    }
+
+    @Override
+    public void end() {
+
+    }
+
+    @Override
+    public void onEvent(Event event) {
+        if(event.getClass() == GamepadEvent.class) {
+            GamepadEvent gev = (GamepadEvent) event;
             if(gev.getLeftStick().x != 0 || gev.getLeftStick().y != 0 || gev.getRightStick().x != 0 || gev.getRightStick().y != 0) {
                 for (Entity ent : Manager.arrayOfEntitiesWith(PhysicsComponent.class)) {
                     if (ent.getClass() == Player.class) {
@@ -39,10 +48,5 @@ public class MovementSystem extends System {
                 }
             }
         }
-    }
-
-    @Override
-    public void end() {
-
     }
 }

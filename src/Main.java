@@ -24,7 +24,6 @@ public class Main {
             TimeManager.countDT();
 
             StateManager.getCurrent().update();
-            Manager.clearEvents();
 
             //render
             StateManager.getCurrent().render();

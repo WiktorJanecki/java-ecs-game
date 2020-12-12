@@ -28,7 +28,7 @@ public class InputSystem extends System {
         glfwSetKeyCallback(WindowManager.getWindow(),keyCallback = new GLFWKeyCallback(){
             @Override
             public void invoke(long window, int key, int scancode, int action, int mods) {
-                if(Manager.isListening(KeyboardEvent.class)&&action == GLFW_PRESS){
+                if(action == GLFW_PRESS){
                     Manager.initEvent(new KeyboardEvent(key));
                 }
             }
@@ -53,7 +53,7 @@ public class InputSystem extends System {
 
     @Override
     public void update() {
-        if(calcController && Manager.isListening(GamepadEvent.class)){
+        if(calcController){
             GLFWGamepadState state = GLFWGamepadState.calloc();
             glfwGetGamepadState(GLFW_JOYSTICK_1,state);
             float LXAxis = state.axes(GLFW_GAMEPAD_AXIS_LEFT_X);

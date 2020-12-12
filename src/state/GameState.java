@@ -61,17 +61,11 @@ public class GameState extends State {
         Manager.addComponent(player,new PhysicsComponent());
         Manager.addComponent(player,new TextureComponent("texture"));
 
-        RenderSystem rsys = new RenderSystem();
-        InheritanceSystem insys = new InheritanceSystem();
-        PhysicsSystem psys = new PhysicsSystem();
-        InputSystem isys = new InputSystem();
-        MovementSystem msys = new MovementSystem();
-
-        Manager.addSystem(rsys);
-        Manager.addSystem(insys);
-        Manager.addSystem(psys);
-        Manager.addSystem(msys);
-        Manager.addSystem(isys);
+        Manager.addSystem(new RenderSystem());
+        Manager.addSystem(new InheritanceSystem());
+        Manager.addSystem(new PhysicsSystem());
+        Manager.addSystem(new InputSystem());
+        Manager.addSystem(new MovementSystem());
 
         //after loading all components
         for(var sys : Manager.getSystems()){

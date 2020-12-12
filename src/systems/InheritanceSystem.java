@@ -2,11 +2,13 @@ package systems;
 
 import components.TransformComponent;
 import events.ChangePositionEvent;
+import events.Event;
+import events.Listener;
 import managers.Manager;
 import entities.Entity;
 import org.joml.Vector3f;
 
-public class InheritanceSystem extends System {
+public class InheritanceSystem extends System implements Listener {
     @Override
     public void start() {
         for(var ent : Manager.arrayOfEntitiesWith(TransformComponent.class)){
@@ -29,7 +31,6 @@ public class InheritanceSystem extends System {
 
             }
         }
-        Manager.listen(ChangePositionEvent.class);
     }
 
     @Override
@@ -39,14 +40,6 @@ public class InheritanceSystem extends System {
 
     @Override
     public void update() {
-       for(var ev : Manager.getEvent(ChangePositionEvent.class)) {
-           ChangePositionEvent cev = (ChangePositionEvent) ev;
-           try {
-               calculatePositionForMovedObject(Manager.getEntity(cev.getMovedEntityID()));
-           } catch (Exception e) {
-               java.lang.System.err.println(e);
-           }
-       }
 
     }
 
@@ -65,6 +58,18 @@ public class InheritanceSystem extends System {
                 } catch (Exception e) {
                     java.lang.System.err.println(e);
                 }
+            }
+        }
+    }
+
+    @Override
+    public void onEvent(Event event) {
+        if(event.getClass() == ChangePositionEvent.class) {
+            ChangePositionEvent cev = (ChangePositionEvent) event;
+            try {
+                calculatePositionForMovedObject(Manager.getEntity(cev.getMovedEntityID()));
+            } catch (Exception e) {
+                java.lang.System.err.println(e);
             }
         }
     }
