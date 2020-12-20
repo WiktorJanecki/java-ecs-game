@@ -17,7 +17,6 @@ public class ShaderManager {
     private static StaticShader shader = new StaticShader();
 
     private static CameraComponent camera;
-    private static TransformComponent transf;
 
     public static StaticShader getShader(){
         return shader;
@@ -41,7 +40,6 @@ public class ShaderManager {
         for(var ent : Manager.arrayOfEntitiesWith(CameraComponent.class)){
             try{
                 camera = Manager.getComponent(ent,CameraComponent.class);
-                transf = Manager.getComponent(ent,TransformComponent.class);
             }
             catch(Exception e){
                 java.lang.System.err.println(e);
@@ -54,10 +52,10 @@ public class ShaderManager {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glClearColor(1,0.5f,0.5f,1);
         shader.start();
-        if(camera == null && transf == null){
-            java.lang.System.err.println("Error: Camera not found. There must be a entity with either camera and transform component");
+        if(camera == null){
+            java.lang.System.err.println("Error: Camera not found. There must be a entity with camera component");
         }else {
-            shader.loadViewMatrix(camera,transf);
+            shader.loadViewMatrix(camera);
         }
         shader.stop();
     }

@@ -35,8 +35,7 @@ public class GameState extends State {
         Manager.addEntity(camera);
         Manager.addEntity(player);
 
-        Manager.addComponent(camera,new TransformComponent(new Vector3f(0,0,5f),0,0,0,1,1,1));
-        Manager.addComponent(camera,new CameraComponent(0,0,0));
+        Manager.addComponent(camera,new CameraComponent(new Vector3f(0,0,5f),0,0,0));
 
         Manager.addComponent(entity,new MeshComponent(Quad.vertices,Quad.textureCoords,Quad.indieces));
         Manager.addComponent(entity,new TransformComponent(new Vector3f(2,0,0),0,0,0,1,2,1));

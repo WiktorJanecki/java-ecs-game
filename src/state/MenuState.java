@@ -37,8 +37,7 @@ public class MenuState extends State implements onEvent {
         Manager.addComponent(entity,new MeshComponent(Quad.vertices,Quad.textureCoords,Quad.indieces));
         Manager.addComponent(entity,new TextureComponent("menu"));
 
-        Manager.addComponent(camera, new CameraComponent(0,0,0));
-        Manager.addComponent(camera, new TransformComponent(new Vector3f(0,0,1),0,0,0,1,1,1));
+        Manager.addComponent(camera, new CameraComponent(new Vector3f(0,0,1),0,0,0));
 
         Manager.addSystem(new RenderSystem());
         Manager.addSystem(new InputSystem());
