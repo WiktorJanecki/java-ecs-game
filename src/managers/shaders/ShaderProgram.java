@@ -1,4 +1,4 @@
-package systems.shaders;
+package managers.shaders;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;

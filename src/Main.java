@@ -38,5 +38,4 @@ public class Main {
 // Create TimeManager do every second callback and move windows title change to this callback from time manager
 // Extract loader system from renderer
 // Create terrain renderer
-// Move shaders to shaderManager
 // Think about static managers and implements

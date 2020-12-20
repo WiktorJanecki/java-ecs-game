@@ -1,9 +1,8 @@
 package managers;
 
 import components.CameraComponent;
-import components.TransformComponent;
 import org.joml.Matrix4f;
-import systems.shaders.StaticShader;
+import managers.shaders.StaticShader;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.glClearColor;

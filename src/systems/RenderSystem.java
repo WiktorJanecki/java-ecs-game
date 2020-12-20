@@ -1,15 +1,13 @@
 package systems;
 
-import components.CameraComponent;
 import components.MeshComponent;
 import components.TextureComponent;
 import components.TransformComponent;
 import managers.Manager;
 import managers.ShaderManager;
-import managers.WindowManager;
 import org.joml.Matrix4f;
 import org.lwjgl.system.MemoryStack;
-import systems.shaders.StaticShader;
+import managers.shaders.StaticShader;
 import tools.MatrixMath;
 
 import java.nio.ByteBuffer;
@@ -19,8 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11C.glClear;
 import static org.lwjgl.opengl.GL13C.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13C.glActiveTexture;
 import static org.lwjgl.opengl.GL15.glDeleteBuffers;
