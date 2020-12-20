@@ -3,12 +3,11 @@ package systems;
 import components.TransformComponent;
 import events.ChangePositionEvent;
 import events.Event;
-import events.Listener;
 import managers.Manager;
 import entities.Entity;
 import org.joml.Vector3f;
 
-public class InheritanceSystem extends System implements Listener {
+public class InheritanceSystem extends System implements onEvent {
     @Override
     public void start() {
         for(var ent : Manager.arrayOfEntitiesWith(TransformComponent.class)){

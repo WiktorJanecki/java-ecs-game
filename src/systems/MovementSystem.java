@@ -8,7 +8,7 @@ import entities.Entity;
 import org.joml.Vector3f;
 
 
-public class MovementSystem extends System implements Listener {
+public class MovementSystem extends System implements onEvent {
 
     @Override
     public void start() {

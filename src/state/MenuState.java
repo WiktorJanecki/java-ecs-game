@@ -5,9 +5,7 @@ import components.MeshComponent;
 import components.TextureComponent;
 import components.TransformComponent;
 import events.Event;
-import events.GamepadEvent;
 import events.KeyboardEvent;
-import events.Listener;
 import managers.Manager;
 import managers.StateManager;
 import org.joml.Vector3f;
@@ -16,13 +14,14 @@ import shapes.Quad;
 import systems.InheritanceSystem;
 import systems.InputSystem;
 import systems.RenderSystem;
+import systems.onEvent;
 
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 import static org.lwjgl.opengl.GL11.glClearColor;
 
 
-public class MenuState extends State implements Listener {
+public class MenuState extends State implements onEvent {
 
     private Entity entity = new Entity();
     private Entity camera = new Entity();
