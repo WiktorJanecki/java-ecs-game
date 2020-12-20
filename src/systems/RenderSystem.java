@@ -47,7 +47,7 @@ public class RenderSystem extends System {
                     MeshComponent mesh = Manager.getComponent(ent, MeshComponent.class);
                     int vaoID = createVAO();
                     bindIndicesBuffer(mesh.getIndices());
-                    storeDataInAttributeList(0,3,mesh.getPositions());
+                    storeDataInAttributeList(0,2,mesh.getPositions());
                     storeDataInAttributeList(1,2,mesh.getTextures());
                     unbindVAO();
                     mesh.setVaoID(vaoID);
