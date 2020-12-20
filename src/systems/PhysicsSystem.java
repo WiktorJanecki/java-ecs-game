@@ -44,19 +44,19 @@ public class PhysicsSystem extends System {
 
             //pc.increaseVelocity(0,-gravity*dt,0); for gravity
 
-            pc.increaseVelocity(pc.getAcceleration().x*dt,pc.getAcceleration().y*dt,pc.getAcceleration().z*dt);
+            pc.increaseVelocity(pc.getAcceleration().x*dt,pc.getAcceleration().y*dt);
             if(pc.getVelocity().x > 0){
-                pc.increaseVelocity(dt*-pc.getFriction(),0,0);
+                pc.increaseVelocity(dt*-pc.getFriction(),0);
             }
             if(pc.getVelocity().x < 0){
-                pc.increaseVelocity(dt*pc.getFriction(),0,0);
+                pc.increaseVelocity(dt*pc.getFriction(),0);
             }
 
             if(pc.getVelocity().y > 0){
-                pc.increaseVelocity(0,dt*-pc.getFriction(),0);
+                pc.increaseVelocity(0,dt*-pc.getFriction());
             }
             if(pc.getVelocity().y < 0){
-                pc.increaseVelocity(0,dt*pc.getFriction(),0);
+                pc.increaseVelocity(0,dt*pc.getFriction());
             }
 
             if(pc.getVelocity().x > maxVelocity){
@@ -73,12 +73,12 @@ public class PhysicsSystem extends System {
                 pc.setVelocityY(-maxVelocity);
             }
 
-            if(pc.getVelocity().x*dt != 0 && pc.getVelocity().y*dt != 0 && pc.getVelocity().z*dt != 0){
+            if(pc.getVelocity().x*dt != 0 && pc.getVelocity().y*dt != 0){
                 ChangePositionEvent ev = new ChangePositionEvent();
                 ev.setMovedEntityID(ent.getID());
                 Manager.initEvent(ev);
             }
-            tc.increasePosition(pc.getVelocity().x*dt,pc.getVelocity().y*dt,pc.getVelocity().z*dt);
+            tc.increasePosition(pc.getVelocity().x*dt,pc.getVelocity().y*dt);
 
 
         } catch (Exception e) {

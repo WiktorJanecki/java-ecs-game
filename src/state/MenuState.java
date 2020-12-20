@@ -9,8 +9,9 @@ import events.KeyboardEvent;
 import managers.Manager;
 import managers.ShaderManager;
 import managers.StateManager;
-import org.joml.Vector3f;
+import org.joml.Vector2f;
 import entities.*;
+import org.joml.Vector3f;
 import shapes.Quad;
 import systems.InheritanceSystem;
 import systems.InputSystem;
@@ -33,7 +34,7 @@ public class MenuState extends State implements onEvent {
         Manager.addEntity(entity);
         Manager.addEntity(camera);
 
-        Manager.addComponent(entity,new TransformComponent(new Vector3f(0,0,0),0,0,0,1,1,1));
+        Manager.addComponent(entity,new TransformComponent(new Vector2f(0,0),0,0,0,1,1));
         Manager.addComponent(entity,new MeshComponent(Quad.vertices,Quad.textureCoords,Quad.indieces));
         Manager.addComponent(entity,new TextureComponent("menu"));
 
