@@ -2,10 +2,10 @@ package shapes;
 
 public class Quad {
     public static float[] vertices = {
-            -0.5f, 0.5f, 0,
-            -0.5f, -0.5f, 0,
-            0.5f, -0.5f, 0,
-            0.5f, 0.5f, 0f
+            -0.5f, 0.5f,
+            -0.5f, -0.5f,
+            0.5f, -0.5f,
+            0.5f, 0.5f,
     };
     public static float[] textureCoords = {
             0,0,

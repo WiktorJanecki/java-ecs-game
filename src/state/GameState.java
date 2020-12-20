@@ -5,6 +5,8 @@ import components.*;
 import entities.Entity;
 import entities.Player;
 import managers.Manager;
+import managers.ShaderManager;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import shapes.Quad;
 import systems.*;
@@ -34,30 +36,29 @@ public class GameState extends State {
         Manager.addEntity(camera);
         Manager.addEntity(player);
 
-        Manager.addComponent(camera,new TransformComponent(new Vector3f(0,0,5f),0,0,0,1,1,1));
-        Manager.addComponent(camera,new CameraComponent(0,0,0));
+        Manager.addComponent(camera,new CameraComponent(new Vector3f(0,0,5f),0,0,0));
 
         Manager.addComponent(entity,new MeshComponent(Quad.vertices,Quad.textureCoords,Quad.indieces));
-        Manager.addComponent(entity,new TransformComponent(new Vector3f(2,0,0),0,0,0,1,2,1));
+        Manager.addComponent(entity,new TransformComponent(new Vector2f(2,0),0,0,0,1,2));
         Manager.addComponent(entity,new PhysicsComponent());
         Manager.addComponent(entity,new TextureComponent("texture"));
 
         entity2.setParentID(entity.getID());
         Manager.addComponent(entity2,new MeshComponent(Quad.vertices,Quad.textureCoords,Quad.indieces));
-        Manager.addComponent(entity2,new TransformComponent(new Vector3f(-3f,0,0),0,0,0,1,1,1));
+        Manager.addComponent(entity2,new TransformComponent(new Vector2f(-3f,0),0,0,0,1,1));
         Manager.addComponent(entity2,new TextureComponent("texture"));
 
         Manager.addComponent(entity3,new MeshComponent(Quad.vertices,Quad.textureCoords,Quad.indieces));
-        Manager.addComponent(entity3,new TransformComponent(new Vector3f(2,1,0),0,0,0,1,2,1));
+        Manager.addComponent(entity3,new TransformComponent(new Vector2f(2,1),0,0,0,1,2));
         Manager.addComponent(entity3,new TextureComponent("texture"));
 
         entity4.setParentID(entity3.getID());
         Manager.addComponent(entity4,new MeshComponent(Quad.vertices,Quad.textureCoords,Quad.indieces));
-        Manager.addComponent(entity4,new TransformComponent(new Vector3f(-3f,1,0),0,0,0,1,1,1));
+        Manager.addComponent(entity4,new TransformComponent(new Vector2f(-3f,1),0,0,0,1,1));
         Manager.addComponent(entity4,new TextureComponent("texture"));
 
         Manager.addComponent(player,new MeshComponent(Quad.vertices,Quad.textureCoords,Quad.indieces));
-        Manager.addComponent(player,new TransformComponent(new Vector3f(0,0,0),0,0,0,1,1,1));
+        Manager.addComponent(player,new TransformComponent(new Vector2f(0,0),0,0,0,1,1));
         Manager.addComponent(player,new PhysicsComponent());
         Manager.addComponent(player,new TextureComponent("texture"));
 
@@ -67,6 +68,8 @@ public class GameState extends State {
         Manager.addSystem(new InputSystem());
         Manager.addSystem(new MovementSystem());
 
+        ShaderManager.start();
+
         //after loading all components
         for(var sys : Manager.getSystems()){
             sys.start();
@@ -75,6 +78,7 @@ public class GameState extends State {
 
     @Override
     public void render() {
+        ShaderManager.prepare();
         for(var sys : Manager.getSystems()){
             sys.render();
         }

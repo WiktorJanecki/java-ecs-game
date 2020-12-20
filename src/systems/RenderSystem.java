@@ -1,14 +1,13 @@
 package systems;
 
-import components.CameraComponent;
 import components.MeshComponent;
 import components.TextureComponent;
 import components.TransformComponent;
 import managers.Manager;
-import managers.WindowManager;
+import managers.ShaderManager;
 import org.joml.Matrix4f;
 import org.lwjgl.system.MemoryStack;
-import systems.shaders.StaticShader;
+import managers.shaders.StaticShader;
 import tools.MatrixMath;
 
 import java.nio.ByteBuffer;
@@ -18,8 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11C.glClear;
 import static org.lwjgl.opengl.GL13C.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13C.glActiveTexture;
 import static org.lwjgl.opengl.GL15.glDeleteBuffers;
@@ -30,45 +27,23 @@ import static org.lwjgl.stb.STBImage.stbi_load;
 
 public class RenderSystem extends System {
 
-    private Matrix4f projectionMatrix;
-    private static final float FOV = 70;
-    private static final float NEAR_PLANE = 0.1f;
-    private static final float  FAR_PLANE = 1000f;
     private List<Integer> vaos = new ArrayList<Integer>();
     private List<Integer> vbos = new ArrayList<Integer>();
     private List<Integer> textures = new ArrayList<Integer>();
 
-    private StaticShader shader = new StaticShader();
-    private CameraComponent camera;
-    private TransformComponent transf;
+    private StaticShader shader = ShaderManager.getShader();
 
     public RenderSystem(){}
-    public RenderSystem(Manager manager){
-
-    }
 
     @Override
     public void start() {
-        createProjectionMatrix();
-        shader.start();
-        shader.loadProjectionMatrix(projectionMatrix);
-        shader.stop();
-        for(var ent : Manager.arrayOfEntitiesWith(CameraComponent.class)){
-            try{
-                camera = Manager.getComponent(ent,CameraComponent.class);
-                transf = Manager.getComponent(ent,TransformComponent.class);
-            }
-            catch(Exception e){
-                java.lang.System.err.println(e);
-            }
-        }
         for(var ent : Manager.arrayOfEntitiesWith(MeshComponent.class)){
             try {
                 if(Manager.hasComponent(ent,MeshComponent.class)) {
                     MeshComponent mesh = Manager.getComponent(ent, MeshComponent.class);
                     int vaoID = createVAO();
                     bindIndicesBuffer(mesh.getIndices());
-                    storeDataInAttributeList(0,3,mesh.getPositions());
+                    storeDataInAttributeList(0,2,mesh.getPositions());
                     storeDataInAttributeList(1,2,mesh.getTextures());
                     unbindVAO();
                     mesh.setVaoID(vaoID);
@@ -90,13 +65,7 @@ public class RenderSystem extends System {
 
     @Override
     public void render() {
-        prepare();
         shader.start();
-        if(camera == null && transf == null){
-            java.lang.System.err.println("Error: Camera not found. There must be a entity with either camera and transform component");
-        }else {
-            shader.loadViewMatrix(camera,transf);
-        }
         for(var ent : Manager.arrayOfEntitiesWith(MeshComponent.class)){
             try {
                 if(Manager.hasComponent(ent,TransformComponent.class)){
@@ -159,32 +128,9 @@ public class RenderSystem extends System {
     }
 
     /**
-     * Create Projection Matrix from static variables (Recreate on window changes)
-     */
-    private void createProjectionMatrix(){
-        float aspectRatio = (float) WindowManager.WIDTH / (float) WindowManager.HEIGHT;
-        float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))) * aspectRatio);
-        float x_scale = y_scale / aspectRatio;
-        float frustum_length = FAR_PLANE - NEAR_PLANE;
-
-        projectionMatrix = new Matrix4f();
-        projectionMatrix.m00(x_scale);
-        projectionMatrix.m11(y_scale);
-        projectionMatrix.m22(-((FAR_PLANE + NEAR_PLANE) / frustum_length));
-        projectionMatrix.m23(-1);
-        projectionMatrix.m32(-((2 * NEAR_PLANE * FAR_PLANE) / frustum_length));
-        projectionMatrix.m33(0);
-    }
-    /**
      * Prepare screen before rendering
      * Clear, depth test and color
      */
-    private void prepare(){
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glClearColor(1,0.5f,0.5f,1);
-    }
     private int createVAO(){
         int vaoID = glGenVertexArrays();
         vaos.add(vaoID);

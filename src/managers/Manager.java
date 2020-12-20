@@ -4,6 +4,7 @@ import entities.Entity;
 import components.Component;
 import events.*;
 import systems.System;
+import systems.onEvent;
 
 import java.util.LinkedList;
 
@@ -89,12 +90,12 @@ public class Manager extends Throwable {
 
     public static void initEvent(Event event){
        for(var sys : systems){
-           if(sys instanceof Listener){
-                ((Listener) sys).onEvent(event);
+           if(sys instanceof onEvent){
+                ((onEvent) sys).onEvent(event);
            }
        }
-       if(StateManager.getCurrent() instanceof Listener){
-           ((Listener) StateManager.getCurrent()).onEvent(event);
+       if(StateManager.getCurrent() instanceof onEvent){
+           ((onEvent) StateManager.getCurrent()).onEvent(event);
        }
     }
 

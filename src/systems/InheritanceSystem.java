@@ -3,12 +3,11 @@ package systems;
 import components.TransformComponent;
 import events.ChangePositionEvent;
 import events.Event;
-import events.Listener;
 import managers.Manager;
 import entities.Entity;
-import org.joml.Vector3f;
+import org.joml.Vector2f;
 
-public class InheritanceSystem extends System implements Listener {
+public class InheritanceSystem extends System implements onEvent {
     @Override
     public void start() {
         for(var ent : Manager.arrayOfEntitiesWith(TransformComponent.class)){
@@ -16,7 +15,7 @@ public class InheritanceSystem extends System implements Listener {
                 try{
                     TransformComponent Ctransf = Manager.getComponent(ent,TransformComponent.class);
                     TransformComponent Ptransf = Manager.getComponent(Manager.getEntity(ent.getParentID()),TransformComponent.class);
-                    Ctransf.setPosition( new Vector3f(Ctransf.getRelativePosition().x+Ptransf.getPosition().x,Ctransf.getRelativePosition().y+Ptransf.getPosition().y,Ctransf.getRelativePosition().z+Ptransf.getPosition().z));
+                    Ctransf.setPosition( new Vector2f(Ctransf.getRelativePosition().x+Ptransf.getPosition().x,Ctransf.getRelativePosition().y+Ptransf.getPosition().y));
                 } catch (Exception e) {
                     java.lang.System.err.println(e);
                 }
@@ -54,7 +53,7 @@ public class InheritanceSystem extends System implements Listener {
                 try{
                     TransformComponent Ctransf = Manager.getComponent(ent,TransformComponent.class);
                     TransformComponent Ptransf = Manager.getComponent(entity,TransformComponent.class);
-                    Ctransf.setPosition( new Vector3f(Ctransf.getRelativePosition().x+Ptransf.getPosition().x,Ctransf.getRelativePosition().y+Ptransf.getPosition().y,Ctransf.getRelativePosition().z+Ptransf.getPosition().z));
+                    Ctransf.setPosition( new Vector2f(Ctransf.getRelativePosition().x+Ptransf.getPosition().x,Ctransf.getRelativePosition().y+Ptransf.getPosition().y));
                 } catch (Exception e) {
                     java.lang.System.err.println(e);
                 }
