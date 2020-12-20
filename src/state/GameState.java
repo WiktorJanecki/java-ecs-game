@@ -5,6 +5,7 @@ import components.*;
 import entities.Entity;
 import entities.Player;
 import managers.Manager;
+import managers.ShaderManager;
 import org.joml.Vector3f;
 import shapes.Quad;
 import systems.*;
@@ -67,6 +68,8 @@ public class GameState extends State {
         Manager.addSystem(new InputSystem());
         Manager.addSystem(new MovementSystem());
 
+        ShaderManager.start();
+
         //after loading all components
         for(var sys : Manager.getSystems()){
             sys.start();
@@ -75,6 +78,7 @@ public class GameState extends State {
 
     @Override
     public void render() {
+        ShaderManager.prepare();
         for(var sys : Manager.getSystems()){
             sys.render();
         }

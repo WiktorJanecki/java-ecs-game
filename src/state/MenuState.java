@@ -7,6 +7,7 @@ import components.TransformComponent;
 import events.Event;
 import events.KeyboardEvent;
 import managers.Manager;
+import managers.ShaderManager;
 import managers.StateManager;
 import org.joml.Vector3f;
 import entities.*;
@@ -43,6 +44,7 @@ public class MenuState extends State implements onEvent {
         Manager.addSystem(new InputSystem());
         Manager.addSystem(new InheritanceSystem());
 
+        ShaderManager.start();
 
         for(var sys : Manager.getSystems()){
             sys.start();
@@ -59,6 +61,7 @@ public class MenuState extends State implements onEvent {
 
     @Override
     public void update() {
+        ShaderManager.prepare();
         for(var sys : Manager.getSystems()){
             sys.update();
         }
