@@ -2,6 +2,7 @@ package managers;
 
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
+import systems.onSecond;
 import tools.Git;
 
 
@@ -9,7 +10,7 @@ import static java.sql.Types.NULL;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.glViewport;
 
-public class WindowManager {
+public class WindowManager implements onSecond {
 
     public static int WIDTH = 1280, HEIGHT = 720;
     static long window;
@@ -103,5 +104,10 @@ public class WindowManager {
             System.out.println("Failed to create developer title");
         }
         return title;
+    }
+    private static String title = WindowManager.getDeveloperTitle();
+    @Override
+    public void onSecond() {
+        glfwSetWindowTitle(WindowManager.getWindow(), (title+ "               FPS : " + "" + TimeManager.getFPS()));
     }
 }

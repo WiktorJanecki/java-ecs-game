@@ -1,5 +1,7 @@
 package managers;
 
+import systems.onSecond;
+
 import static org.lwjgl.glfw.GLFW.glfwSetWindowTitle;
 
 public class TimeManager {
@@ -14,16 +16,15 @@ public class TimeManager {
         dtStart = System.currentTimeMillis();
     }
 
-
-    //TODO delete
-    private static String title = WindowManager.getDeveloperTitle();
     private static int temporaryFPS = 0;
     public static void countFPS(){
         if(System.currentTimeMillis()-fpsStart >= 1000){
+            for(var ent : Manager.getInterfacesImplementations(onSecond.class)){
+                ((onSecond)ent).onSecond();
+            }
             fps = temporaryFPS;
             temporaryFPS = 0;
             fpsStart = System.currentTimeMillis();
-            glfwSetWindowTitle(WindowManager.getWindow(), (title+ "               FPS : " + "" + fps));
         }
         temporaryFPS++;
     }

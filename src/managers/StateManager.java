@@ -1,6 +1,5 @@
 package managers;
 
-import com.sun.tools.jconsole.JConsoleContext;
 import state.State;
 import systems.onStateChange;
 
