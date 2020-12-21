@@ -64,6 +64,7 @@ public class GameState extends State {
 
         Manager.addSystem(new RenderSystem());
         Manager.addSystem(new InheritanceSystem());
+        Manager.addSystem(new MeshLoadSystem());
         Manager.addSystem(new PhysicsSystem());
         Manager.addSystem(new InputSystem());
         Manager.addSystem(new MovementSystem());
