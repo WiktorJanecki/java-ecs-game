@@ -3,6 +3,7 @@ package systems;
 import components.MeshComponent;
 import components.TextureComponent;
 import components.TransformComponent;
+import entities.EntityFlags;
 import managers.Manager;
 import managers.ShaderManager;
 import org.joml.Matrix4f;
@@ -40,16 +41,16 @@ public class RenderSystem extends System {
     public void render() {
         shader.start();
         for(var ent : Manager.arrayOfEntitiesWith(MeshComponent.class)){
-            try {
-                if(Manager.hasComponent(ent,TransformComponent.class)){
-                    renderWithShader(Manager.getComponent(ent,MeshComponent.class),Manager.getComponent(ent,TransformComponent.class));
+            if(Manager.hasFlag(ent, EntityFlags.RENDERER_DEFAULT)) {
+                try {
+                    if (Manager.hasComponent(ent, TransformComponent.class)) {
+                        renderWithShader(Manager.getComponent(ent, MeshComponent.class), Manager.getComponent(ent, TransformComponent.class));
+                    } else {
+                        renderShaderless(Manager.getComponent(ent, MeshComponent.class));
+                    }
+                } catch (Exception e) {
+                    java.lang.System.err.println(e);
                 }
-                else {
-                    renderShaderless(Manager.getComponent(ent, MeshComponent.class));
-                }
-            }
-            catch(Exception e){
-                java.lang.System.err.println(e);
             }
         }
         shader.stop();

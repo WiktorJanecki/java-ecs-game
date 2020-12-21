@@ -77,6 +77,22 @@ public class Manager extends Throwable {
         }
         return list;
     }
+    public static void addFlag(Entity entity, String flag){
+        entity.flags.push(flag);
+    }
+
+    public static void removeFlag(Entity entity, String flag){
+        entity.flags.remove(flag);
+    }
+    public static boolean hasFlag(Entity entity,String flag){
+        boolean ans = false;
+        for(var f : entity.flags){
+            if(f == flag){
+                ans = true;
+            }
+        }
+        return ans;
+    }
 
     public static void addSystem(System system){
         for(var sys : systems){

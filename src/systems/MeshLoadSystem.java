@@ -2,9 +2,11 @@ package systems;
 
 import components.MeshComponent;
 import components.TextureComponent;
+import entities.EntityFlags;
 import managers.Manager;
 import org.lwjgl.system.MemoryStack;
 
+import javax.swing.text.html.parser.Entity;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -38,6 +40,7 @@ public class MeshLoadSystem extends System {
     public void start() {
         for(var ent : Manager.arrayOfEntitiesWith(MeshComponent.class)){
             try {
+                Manager.addFlag(ent,EntityFlags.RENDERER_DEFAULT);
                 if(Manager.hasComponent(ent,MeshComponent.class)) {
                     MeshComponent mesh = Manager.getComponent(ent, MeshComponent.class);
                     int vaoID = createVAO();

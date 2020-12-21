@@ -6,6 +6,7 @@ import java.util.LinkedList;
 
 public class Entity {
     public LinkedList<Component> components = new LinkedList<Component>();
+    public LinkedList<String> flags = new LinkedList<>();
     private int id = 0;
     private int parent = -1;
     
