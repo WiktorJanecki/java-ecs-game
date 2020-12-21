@@ -34,7 +34,3 @@ public class Main {
     }
 }
 
-//TODO
-// Create terrain renderer
-//   Second renderer
-//   render only on terrain flag

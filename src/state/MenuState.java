@@ -41,6 +41,7 @@ public class MenuState extends State implements onEvent {
         Manager.addSystem(new InheritanceSystem());
         Manager.addSystem(new MeshLoadSystem());
         Manager.addSystem(new RenderSystem());
+        Manager.addSystem(new TerrainRendererSystem());
 
         ShaderManager.start();
 
