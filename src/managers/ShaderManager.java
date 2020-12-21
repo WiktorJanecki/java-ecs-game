@@ -3,12 +3,13 @@ package managers;
 import components.CameraComponent;
 import org.joml.Matrix4f;
 import managers.shaders.StaticShader;
+import systems.onStateChange;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import static org.lwjgl.opengl.GL11C.glClear;
 
-public class ShaderManager {
+public class ShaderManager implements onStateChange {
     private static Matrix4f projectionMatrix;
     private static final float FOV = 70;
     private static final float NEAR_PLANE = 0.1f;
@@ -59,7 +60,8 @@ public class ShaderManager {
         shader.stop();
     }
 
-    public static void onStateChange() {
+    @Override
+    public void onStateChange() {
         shader.cleanUp();
         shader = new StaticShader();
     }

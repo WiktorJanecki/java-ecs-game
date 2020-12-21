@@ -3,6 +3,7 @@ package managers;
 import entities.Entity;
 import components.Component;
 import events.*;
+import state.State;
 import systems.System;
 import systems.onEvent;
 
@@ -11,7 +12,20 @@ import java.util.LinkedList;
 public class Manager extends Throwable {
     private static LinkedList<Entity> entities = new LinkedList<>();
     private static LinkedList<System> systems = new LinkedList<>();
+    private static LinkedList<Object> instances = new LinkedList<>();
     private static int lastID = -1;
+
+    public static void init(){
+        for(var sys : systems){
+            instances.push(sys);
+        }
+        instances.push(new ShaderManager());
+        instances.push(new StateManager());
+        instances.push(new TimeManager());
+        instances.push(new WindowManager());
+
+        instances.push(StateManager.getCurrent());
+    }
 
     public static void addEntity(Entity entity){
         entity.setID(generateID());
@@ -89,14 +103,19 @@ public class Manager extends Throwable {
 
 
     public static void initEvent(Event event){
-       for(var sys : systems){
-           if(sys instanceof onEvent){
-                ((onEvent) sys).onEvent(event);
-           }
-       }
-       if(StateManager.getCurrent() instanceof onEvent){
-           ((onEvent) StateManager.getCurrent()).onEvent(event);
-       }
+        for(var ent: getInterfacesImplementations(onEvent.class)){
+            ((onEvent) ent).onEvent(event);
+        }
+    }
+
+    public static LinkedList<Object> getInterfacesImplementations(Class<?> cls){
+        LinkedList<Object> list = new LinkedList<>();
+        for(var el : instances){
+            if(cls.isInstance(el)){
+                list.push(el);
+            }
+        }
+        return list;
     }
 
 
@@ -107,6 +126,7 @@ public class Manager extends Throwable {
     public static void cleanUp(){
         entities.clear();
         systems.clear();
+        instances.clear();
         lastID = -1;
     }
 }

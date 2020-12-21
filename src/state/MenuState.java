@@ -13,10 +13,7 @@ import org.joml.Vector2f;
 import entities.*;
 import org.joml.Vector3f;
 import shapes.Quad;
-import systems.InheritanceSystem;
-import systems.InputSystem;
-import systems.RenderSystem;
-import systems.onEvent;
+import systems.*;
 
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;

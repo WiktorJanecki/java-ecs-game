@@ -1,8 +1,10 @@
 package managers;
 
+import com.sun.tools.jconsole.JConsoleContext;
 import state.State;
+import systems.onStateChange;
 
-public class StateManager {
+public class StateManager{
     static State current;
     static State next;
 
@@ -10,10 +12,11 @@ public class StateManager {
     public static void changeState(State state){
         setNext(state);
         current.end();
-        ShaderManager.onStateChange();
+        for(var ent : Manager.getInterfacesImplementations(onStateChange.class)){
+            ((onStateChange)ent).onStateChange();
+        }
         Manager.cleanUp();
-        current = next;
-        current.start();
+        setCurrent(next);
     }
 
     public static State getCurrent(){
@@ -22,6 +25,7 @@ public class StateManager {
     public static void setCurrent(State state){
         current = state;
         current.start();
+        Manager.init();
     }
     static void setNext(State nextState){
         next = nextState;

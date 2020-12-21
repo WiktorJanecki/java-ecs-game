@@ -98,7 +98,6 @@ public class RenderSystem extends System {
         for(int texture:textures){
             glDeleteTextures(texture);
         }
-        shader.cleanUp();
     }
 
     private void renderShaderless(MeshComponent mesh){
